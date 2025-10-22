@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>로그인 - A+Life 홈페이지</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .login-container {
+        background: white;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        width: 100%;
+        max-width: 400px;
+      }
+
+      h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 10px;
+      }
+
+      .subtitle {
+        text-align: center;
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 30px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: #555;
+        font-weight: 500;
+      }
+
+      input[type="text"],
+      input[type="password"] {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 14px;
+        transition: border-color 0.3s;
+      }
+
+      input[type="text"]:focus,
+      input[type="password"]:focus {
+        outline: none;
+        border-color: #667eea;
+      }
+
+      button {
+        width: 100%;
+        padding: 12px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s;
+      }
+
+      button:hover {
+        transform: translateY(-2px);
+      }
+
+      .alert {
+        padding: 12px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      .alert-error {
+        background: #fee;
+        color: #c33;
+        border: 1px solid #fcc;
+      }
+
+      .alert-success {
+        background: #efe;
+        color: #3c3;
+        border: 1px solid #cfc;
+      }
+
+      .test-accounts {
+        margin-top: 30px;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 5px;
+      }
+
+      .test-accounts h3 {
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 15px;
+      }
+
+      .account-item {
+        margin-bottom: 10px;
+        padding: 10px;
+        background: white;
+        border-radius: 3px;
+        font-size: 13px;
+      }
+
+      .account-item strong {
+        color: #667eea;
+      }
+
+      .account-item .role {
+        display: inline-block;
+        padding: 2px 8px;
+        background: #667eea;
+        color: white;
+        border-radius: 3px;
+        font-size: 11px;
+        margin-left: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-container">
+      <h1>🔐 A+Life 로그인</h1>
+      <p class="subtitle">관리자 및 사용자 로그인</p>
+
+      <div th:if="${error}" class="alert alert-error">
+        <span th:text="${error}">오류 메시지</span>
+      </div>
+
+      <div th:if="${message}" class="alert alert-success">
+        <span th:text="${message}">성공 메시지</span>
+      </div>
+
+      <form th:action="@{/login}" method="post">
+        <div class="form-group">
+          <label for="username">아이디</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            placeholder="아이디를 입력하세요"
+            required
+            autofocus
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="password">비밀번호</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="비밀번호를 입력하세요"
+            required
+          />
+        </div>
+
+        <button type="submit">로그인</button>
+      </form>
+
+      <div class="test-accounts">
+        <h3>📋 테스트 계정 정보</h3>
+        <div class="account-item">
+          <strong>admin</strong> / apluslife1
+          <span class="role">관리자</span>
+        </div>
+        <div class="account-item">
+          <strong>test4</strong> / 1234
+          <span class="role">일반사용자</span>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

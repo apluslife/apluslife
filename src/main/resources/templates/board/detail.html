@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${board.title} + ' - ' + ${boardTypeName}">게시글</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            margin-left: 10px;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .main-content {
+            padding: 40px 20px;
+        }
+
+        .board-detail {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .board-header {
+            padding: 30px;
+            border-bottom: 2px solid #f8f9fa;
+        }
+
+        .board-title {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .notice-badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 5px;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+
+        .board-meta {
+            display: flex;
+            gap: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .board-content {
+            padding: 30px;
+            line-height: 1.8;
+            min-height: 300px;
+            color: #333;
+            border-bottom: 2px solid #f8f9fa;
+        }
+
+        .board-files {
+            padding: 20px 30px;
+            background: #f8f9fa;
+        }
+
+        .file-list {
+            list-style: none;
+        }
+
+        .file-item {
+            padding: 10px;
+            margin-bottom: 5px;
+            background: white;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .file-icon {
+            font-size: 20px;
+        }
+
+        .file-info {
+            flex: 1;
+        }
+
+        .file-name {
+            color: #333;
+            font-weight: 500;
+        }
+
+        .file-size {
+            color: #999;
+            font-size: 12px;
+        }
+
+        .file-download {
+            color: #667eea;
+            text-decoration: none;
+            padding: 5px 15px;
+            border: 1px solid #667eea;
+            border-radius: 5px;
+        }
+
+        .file-download:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .image-preview {
+            max-width: 100%;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        .board-actions {
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="container">
+        <div class="header-content">
+            <h1 th:text="${boardTypeName}">게시판</h1>
+            <div>
+                <a href="/" class="btn">홈으로</a>
+                <a th:href="@{'/board/' + ${boardType}}" class="btn">목록</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="container">
+        <!-- 메시지 표시 -->
+        <div th:if="${message}" class="message success" th:text="${message}"></div>
+        <div th:if="${error}" class="message error" th:text="${error}"></div>
+
+        <div class="board-detail">
+            <!-- 게시글 헤더 -->
+            <div class="board-header">
+                <h1 class="board-title">
+                    <span th:if="${board.isNotice}" class="notice-badge">공지</span>
+                    <span th:text="${board.title}">제목</span>
+                </h1>
+                <div class="board-meta">
+                    <span>작성자: <strong th:text="${board.writer}">작성자</strong></span>
+                    <span>작성일: <span th:text="${board.formattedCreatedDate}">2025-10-21</span></span>
+                    <span>조회수: <span th:text="${board.viewCount}">0</span></span>
+                </div>
+            </div>
+
+            <!-- 게시글 내용 -->
+            <div class="board-content">
+                <div th:utext="${#strings.replace(#strings.replace(board.content, '\n', '<br>'), '\r', '')}">
+                    게시글 내용
+                </div>
+            </div>
+
+            <!-- 첨부파일 -->
+            <div class="board-files" th:if="${!board.files.empty}">
+                <h3>첨부파일 (<span th:text="${board.files.size()}">0</span>)</h3>
+                <ul class="file-list">
+                    <li th:each="file : ${board.files}" class="file-item">
+                        <span class="file-icon" th:text="${file.image ? '🖼️' : '📎'}">📎</span>
+                        <div class="file-info">
+                            <div class="file-name" th:text="${file.originalFileName}">파일명</div>
+                            <div class="file-size" th:text="${file.formattedFileSize}">0 KB</div>
+                            <!-- 이미지 미리보기 -->
+                            <div th:if="${file.image}">
+                                <img th:src="@{'/uploads/' + ${file.filePath}}"
+                                     th:alt="${file.originalFileName}"
+                                     class="image-preview"
+                                     onerror="this.style.display='none'">
+                            </div>
+                        </div>
+                        <a th:href="@{'/board/file/download/' + ${file.idx}}"
+                           class="file-download">
+                            다운로드
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 게시글 액션 버튼 -->
+            <div class="board-actions">
+                <div>
+                    <a th:href="@{'/board/' + ${boardType}}" class="btn">목록</a>
+                </div>
+                <div th:if="${isWriter}">
+                    <a th:href="@{'/board/' + ${boardType} + '/' + ${board.idx} + '/edit'}" class="btn btn-primary">수정</a>
+                    <form th:action="@{'/board/' + ${boardType} + '/' + ${board.idx} + '/delete'}"
+                          method="post" style="display: inline;"
+                          onsubmit="return confirm('정말 삭제하시겠습니까?');">
+                        <button type="submit" class="btn btn-danger">삭제</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

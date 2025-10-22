@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회사소개 - A+Life</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            background: white;
+            color: #667eea;
+        }
+
+        .main-content {
+            padding: 40px 20px;
+        }
+
+        .section {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .section p {
+            line-height: 1.8;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .info-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="container">
+        <div class="header-content">
+            <h1>🏢 회사소개</h1>
+            <a href="/" class="btn">홈으로</a>
+        </div>
+    </div>
+</div>
+
+<div class="main-content">
+    <div class="container">
+        <div class="section">
+            <h2>회사 개요</h2>
+            <p>A+Life는 최고의 품질과 서비스로 고객 만족을 실현하는 기업입니다.</p>
+            <p>고객의 행복한 삶을 위한 최고의 가치를 창출하겠습니다.</p>
+
+            <div class="info-box">
+                <strong>📌 주요 정보</strong><br><br>
+                <strong>회사명:</strong> 주식회사 A+Life<br>
+                <strong>설립일:</strong> 2024년 1월<br>
+                <strong>대표:</strong> 홍길동<br>
+                <strong>주소:</strong> 서울특별시 강남구<br>
+                <strong>연락처:</strong> 02-1234-5678
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>비전 & 미션</h2>
+            <h3>Vision (비전)</h3>
+            <p>고객의 삶의 질 향상을 위한 최고의 파트너</p>
+
+            <h3>Mission (미션)</h3>
+            <p>✅ 고객 중심의 가치 창출</p>
+            <p>✅ 혁신적인 제품과 서비스 제공</p>
+            <p>✅ 지속 가능한 성장</p>
+        </div>
+
+        <div class="section">
+            <h2>연혁</h2>
+            <p><strong>2024.01</strong> - 회사 설립</p>
+            <p><strong>2024.06</strong> - 주요 제품 출시</p>
+            <p><strong>2024.12</strong> - 홈페이지 리뉴얼</p>
+        </div>
+
+        <div class="section">
+            <h2>📢 안내</h2>
+            <p>✅ 이 페이지는 로그인 없이 누구나 접근 가능합니다.</p>
+            <p>✅ 회사소개 페이지는 공개 페이지로 설정되어 있습니다.</p>
+            <p>✅ 향후 더 많은 정보가 추가될 예정입니다.</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+# ========================================
+# A+Life 홈페이지 - 운영 환경 설정
+# ========================================
+
+spring:
+  # 데이터소스 - MSSQL (운영 데이터베이스)
+  datasource:
+    url: jdbc:sqlserver://localhost:1433;databaseName=apluslife;encrypt=true;trustServerCertificate=true
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    username: ${DB_USERNAME}  # 환경 변수로 관리
+    password: ${DB_PASSWORD}  # 환경 변수로 관리
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+  # H2 콘솔 비활성화 (운영 환경)
+  h2:
+    console:
+      enabled: false
+
+  # JPA 설정
+  jpa:
+    hibernate:
+      ddl-auto: validate  # 스키마 변경 방지
+    show-sql: false       # SQL 로그 비활성화
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.SQLServerDialect
+
+  # Thymeleaf 캐시 활성화 (성능 향상)
+  thymeleaf:
+    cache: true
+
+# 로깅 설정
+logging:
+  level:
+    root: WARN
+    com.apluslife: INFO
+    org.hibernate.SQL: WARN
+  file:
+    name: /var/log/apluslife/application.log
+    max-size: 50MB
+    max-history: 90
+  pattern:
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"

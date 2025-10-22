@@ -1,0 +1,39 @@
+{
+  "permissions": {
+    "allow": [
+      "SlashCommand(/speckit.plan)",
+      "Bash(powershell.exe -ExecutionPolicy Bypass -File \".\\.specify\\scripts\\powershell\\setup-plan.ps1\" -Json)",
+      "SlashCommand(/speckit.tasks)",
+      "Bash(powershell.exe -ExecutionPolicy Bypass -File \".\\.specify\\scripts\\powershell\\check-prerequisites.ps1\" -Json)",
+      "SlashCommand(/speckit.analyze)",
+      "Bash(powershell.exe -ExecutionPolicy Bypass -File \".\\.specify\\scripts\\powershell\\check-prerequisites.ps1\" -Json -RequireTasks -IncludeTasks)",
+      "Bash(dir:*)",
+      "Bash(gradle wrapper:*)",
+      "Bash(./gradlew.bat clean build:*)",
+      "Bash(./gradlew.bat bootRun)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(timeout /t 10 /nobreak)",
+      "Bash(powershell.exe \"Get-ChildItem c:\\apluslife\\logs\")",
+      "Read(//c/apluslife/logs/**)",
+      "Bash(powershell.exe \"Get-Content c:\\apluslife\\logs\\error.log -Tail 50\")",
+      "Bash(powershell.exe \"Get-Content c:\\apluslife\\logs\\error.log -Tail 100\")",
+      "SlashCommand(/speckit.implement)",
+      "Bash(git rev-parse:*)",
+      "Bash(powershell.exe \"Rename-Item ''src\\main\\java\\com\\apluslife\\web\\controller\\BoardController.java'' ''BoardController.java.bak''\")",
+      "Bash(powershell.exe -ExecutionPolicy Bypass -File \"test-login.ps1\")",
+      "Bash(powershell.exe \"Invoke-RestMethod -Uri ''http://localhost:8080/api/member/login'' -Method Post -Body (@{gubun=''2''; id=''admin''; pw=''admin123''} | ConvertTo-Json) -ContentType ''application/json''\")",
+      "Bash(powershell.exe \"$body = @{gubun=''2''; id=''admin''; pw=''admin123''} | ConvertTo-Json; try { $response = Invoke-RestMethod -Uri ''http://localhost:8080/api/member/login'' -Method Post -Body $body -ContentType ''application/json''; Write-Host ''SUCCESS:''; $response | ConvertTo-Json -Depth 10 } catch { Write-Host ''ERROR:'' $_Exception.Message }\")",
+      "Bash(powershell.exe -File test.ps1)",
+      "Bash(taskkill:*)",
+      "Bash(powershell.exe:*)",
+      "Bash(del srcmainjavacomapluslifewebcontrollerBoardController.java.bak)",
+      "Bash(./gradlew.bat clean bootRun)",
+      "Bash(timeout /t 3 /nobreak)",
+      "Bash(del nul)",
+      "Bash(git add:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

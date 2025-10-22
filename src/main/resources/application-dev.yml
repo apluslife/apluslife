@@ -1,0 +1,40 @@
+# ========================================
+# A+Life 홈페이지 - 개발 서버 환경 설정
+# ========================================
+
+spring:
+  # 데이터소스 - H2 파일 기반 (개발 서버에서 데이터 유지)
+  datasource:
+    url: jdbc:h2:file:./data/apluslife-dev
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  # H2 콘솔 활성화 (개발 서버에서만)
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: false  # 외부 접근 차단
+
+  # JPA 설정
+  jpa:
+    hibernate:
+      ddl-auto: update  # 스키마 자동 업데이트
+    show-sql: false     # SQL 로그 파일로만 출력
+
+  # Thymeleaf 캐시 비활성화
+  thymeleaf:
+    cache: false
+
+# 로깅 설정
+logging:
+  level:
+    root: INFO
+    com.apluslife: DEBUG
+    org.hibernate.SQL: DEBUG
+  file:
+    name: logs/apluslife-dev.log
+    max-size: 10MB
+    max-history: 30
