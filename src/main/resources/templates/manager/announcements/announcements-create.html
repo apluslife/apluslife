@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>공시자료 등록 - A+Life</title>
     <!-- SmartEditor2 -->
-    <script type="text/javascript" th:src="@{/smarteditor/js/HuskyEZCreator.js}" charset="UTF-8"></script>
+    <script
+      type="text/javascript"
+      th:src="@{/smarteditor/js/HuskyEZCreator.js}"
+      charset="UTF-8"
+    ></script>
     <style>
       * {
         margin: 0;
@@ -390,20 +394,6 @@
                 />
               </td>
             </tr>
-            <tr>
-              <th>상세 설명</th>
-              <td>
-                <div style="background: #e8f4f8; padding: 10px; border-radius: 5px; margin-bottom: 10px; font-size: 12px; color: #2c3e50;">
-                  💡 SmartEditor를 사용하여 공시자료에 대한 상세한 설명을 작성할 수 있습니다. 마크다운, 이미지 첨부 등 다양한 서식을 지원합니다.
-                </div>
-                <textarea
-                  id="content"
-                  name="content"
-                  placeholder="공시자료에 대한 상세 설명을 입력하세요..."
-                  style="width: 100%; min-height: 400px; border: 1px solid #ddd; border-radius: 5px; padding: 12px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 14px;"
-                ></textarea>
-              </td>
-            </tr>
           </table>
 
           <div class="action-buttons">
@@ -417,24 +407,6 @@
     </div>
 
     <script>
-      let oEditors = [];
-
-      // SmartEditor2 초기화
-      document.addEventListener('DOMContentLoaded', function() {
-        nhn.husky.EZCreator.createInIFrame({
-          oAppRef: oEditors,
-          elPlaceHolder: "content",
-          sSkinURI: "/smarteditor/SmartEditor2Skin.html",
-          fCreator: "createSEditor2",
-          htParams: {
-            bUseToolbar: true,
-            bUseVerticalResizer: true,
-            bUseModeChanger: true,
-            fOnBeforeUnload: function() {}
-          }
-        });
-      });
-
       // 파일 선택 처리
       function handleFileSelect(input, infoId, nameId) {
         const file = input.files[0];
@@ -495,7 +467,7 @@
 
           if (!title) {
             e.preventDefault();
-            alert("상품명을 입력해주세요.");
+            alert("공시제목을을 입력해주세요.");
             return;
           }
 
@@ -503,16 +475,8 @@
           const wordFile = document.getElementById("wordFile").files[0];
           const hwpFile = document.getElementById("hwpFile").files[0];
 
-          if (!pdfFile && !wordFile && !hwpFile) {
-            e.preventDefault();
-            alert("최소 하나의 파일을 업로드해주세요.");
-            return;
-          }
-
-          // SmartEditor 내용 동기화
-          if (oEditors.length > 0) {
-            oEditors[0].exec("UPDATE_CONTENTS_FIELD", []);
-          }
+          document.getElementById;
+          "announcementForm".submit();
         });
     </script>
   </body>

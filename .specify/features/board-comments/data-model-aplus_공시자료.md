@@ -187,10 +187,7 @@ public class AnnouncementFile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idx;
 
-    @Column(name = "board_idx", nullable = false)
-    private Integer boardIdx;  // 게시글 IDX (공시자료의 idx)
-
-    @Column(length = 255, nullable = false)
+@Column(length = 255, nullable = false)
     private String fileName;   // 파일명
 
     @Column(length = 500, nullable = false)
