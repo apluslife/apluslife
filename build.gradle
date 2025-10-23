@@ -8,8 +8,14 @@ group = 'com.apluslife'
 version = '1.0.0'
 
 java {
-    sourceCompatibility = '17'
-    targetCompatibility = '17'
+    // Prefer a Java toolchain so Gradle can select an appropriate JDK when available.
+    toolchain {
+        // Request Java 21 (latest LTS)
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+    // Keep explicit source/target compatibility for downstream tooling that may read these values.
+    sourceCompatibility = '21'
+    targetCompatibility = '21'
 }
 
 // UTF-8 인코딩 설정
@@ -45,7 +51,11 @@ dependencies {
 
     // Database
     runtimeOnly 'com.h2database:h2'
-    implementation 'com.microsoft.sqlserver:mssql-jdbc:12.4.2.jre11'
+    // Use the generic mssql-jdbc artifact (no explicit jre11 classifier) so it's compatible with newer JDKs
+    implementation 'com.microsoft.sqlserver:mssql-jdbc:12.4.2'
+
+    // MyBatis
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
 
     // Lombok
     compileOnly 'org.projectlombok:lombok'

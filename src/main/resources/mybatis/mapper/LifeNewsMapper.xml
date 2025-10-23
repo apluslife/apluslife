@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.apluslife.domain.lifenews.mapper.LifeNewsMapper">
+
+    <!-- 라이프뉴스 목록 조회 (최신순) -->
+    <select id="selectAllOrderByLatest" resultType="com.apluslife.domain.lifenews.entity.LifeNews">
+        SELECT idx, title, content, rDate, uDate
+        FROM aplus_라이프뉴스
+        ORDER BY uDate DESC
+    </select>
+
+    <!-- 라이프뉴스 상세 조회 -->
+    <select id="selectByIdx" resultType="com.apluslife.domain.lifenews.entity.LifeNews">
+        SELECT idx, title, content, rDate, uDate
+        FROM aplus_라이프뉴스
+        WHERE idx = #{idx}
+    </select>
+
+    <!-- 라이프뉴스 제목으로 검색 -->
+    <select id="selectByTitleLike" resultType="com.apluslife.domain.lifenews.entity.LifeNews">
+        SELECT idx, title, content, rDate, uDate
+        FROM aplus_라이프뉴스
+        WHERE title LIKE CONCAT('%', #{searchText}, '%')
+        ORDER BY uDate DESC
+    </select>
+
+    <!-- 라이프뉴스 등록 -->
+    <insert id="insertLifeNews" useGeneratedKeys="true" keyProperty="idx">
+        INSERT INTO aplus_라이프뉴스 (title, content, rDate, uDate)
+        VALUES (#{lifeNews.title}, #{lifeNews.content}, GETDATE(), GETDATE())
+    </insert>
+
+    <!-- 라이프뉴스 수정 -->
+    <update id="updateLifeNews">
+        UPDATE aplus_라이프뉴스
+        SET title = #{lifeNews.title}, content = #{lifeNews.content}, uDate = GETDATE()
+        WHERE idx = #{lifeNews.idx}
+    </update>
+
+    <!-- 라이프뉴스 삭제 (단일) -->
+    <delete id="deleteByIdx">
+        DELETE FROM aplus_라이프뉴스
+        WHERE idx = #{idx}
+    </delete>
+
+    <!-- 라이프뉴스 삭제 (다중) -->
+    <delete id="deleteByIdxList">
+        DELETE FROM aplus_라이프뉴스
+        WHERE idx IN
+        <foreach item="idx" collection="idxList" open="(" separator="," close=")">
+            #{idx}
+        </foreach>
+    </delete>
+
+</mapper>

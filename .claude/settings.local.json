@@ -22,7 +22,8 @@
       "Bash(timeout 35 powershell:*)",
       "Bash(timeout 50 powershell:*)",
       "Bash(timeout 60 ./gradlew.bat:*)",
-      "Bash(timeout 70 ./gradlew.bat:*)"
+      "Bash(timeout 70 ./gradlew.bat:*)",
+      "Bash(./gradlew.bat:*)"
     ],
     "deny": [],
     "ask": []

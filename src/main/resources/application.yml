@@ -43,6 +43,13 @@ spring:
         jdbc:
           charset: UTF-8
 
+  # MyBatis 설정
+  mybatis:
+    mapper-locations: classpath:/mybatis/mapper/*.xml
+    configuration:
+      map-underscore-to-camel-case: true
+      jdbc-type-for-null: NULL
+
   # HTTP 메시지 컨버터 UTF-8 설정
   http:
     encoding:
