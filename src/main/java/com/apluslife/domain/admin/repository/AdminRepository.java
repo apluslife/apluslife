@@ -18,7 +18,8 @@ public interface AdminRepository extends JpaRepository<Admin, Integer> {
 
     /**
      * 관리자 로그인 쿼리
-     * admin_pw 컬럼에 평문 비밀번호가 저장되어 있다고 가정
+     * admin_pw 컬럼에 평문 비밀번호가 저장되어 있음
+     * 평문으로 직접 비교
      */
     @Query(value = """
         SELECT

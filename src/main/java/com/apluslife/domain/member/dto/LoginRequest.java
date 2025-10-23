@@ -11,7 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class LoginRequest {
 
-    private String gubun;  // API구분 (로그인: 2)
     private String id;     // 아이디
     private String pw;     // 비밀번호
 }

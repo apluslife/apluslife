@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>공시자료 등록 - A+Life</title>
+    <!-- SmartEditor2 -->
+    <script type="text/javascript" th:src="@{/smarteditor/js/HuskyEZCreator.js}" charset="UTF-8"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: #f5f7fa;
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .header {
+        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        color: white;
+        padding: 20px 0;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .breadcrumb {
+        font-size: 14px;
+        opacity: 0.9;
+      }
+
+      .breadcrumb a {
+        color: white;
+        text-decoration: none;
+      }
+
+      .breadcrumb a:hover {
+        text-decoration: underline;
+      }
+
+      h1 {
+        font-size: 28px;
+        margin-top: 10px;
+      }
+
+      .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        background: white;
+        color: #e74c3c;
+        font-weight: bold;
+        transition: all 0.3s;
+      }
+
+      .btn:hover {
+        opacity: 0.9;
+      }
+
+      .btn-primary {
+        background: #27ae60;
+        color: white;
+        margin-left: 10px;
+      }
+
+      .btn-secondary {
+        background: #95a5a6;
+        color: white;
+      }
+
+      .content-section {
+        background: white;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+      }
+
+      .form-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .form-table th {
+        background: #f8f9fa;
+        padding: 20px;
+        text-align: left;
+        font-weight: 600;
+        color: #2c3e50;
+        border: 1px solid #dee2e6;
+        width: 200px;
+        vertical-align: top;
+      }
+
+      .form-table td {
+        padding: 20px;
+        border: 1px solid #dee2e6;
+        background: white;
+      }
+
+      .form-input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 14px;
+      }
+
+      .form-input:focus {
+        outline: none;
+        border-color: #e74c3c;
+        box-shadow: 0 0 5px rgba(231, 76, 60, 0.3);
+      }
+
+      .file-upload-area {
+        border: 2px dashed #ddd;
+        border-radius: 5px;
+        padding: 20px;
+        text-align: center;
+        background: #fafafa;
+        transition: all 0.3s;
+      }
+
+      .file-upload-area:hover {
+        border-color: #e74c3c;
+        background: #fef9f9;
+      }
+
+      .file-upload-area.dragover {
+        border-color: #e74c3c;
+        background: #fef9f9;
+      }
+
+      .file-input {
+        display: none;
+      }
+
+      .file-btn {
+        background: #3498db;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.3s;
+      }
+
+      .file-btn:hover {
+        background: #2980b9;
+      }
+
+      .file-info {
+        margin-top: 10px;
+        padding: 10px;
+        background: #e8f5e8;
+        border-radius: 5px;
+        display: none;
+      }
+
+      .file-info.show {
+        display: block;
+      }
+
+      .file-name {
+        color: #27ae60;
+        font-weight: 500;
+      }
+
+      .file-delete {
+        color: #e74c3c;
+        cursor: pointer;
+        margin-left: 10px;
+        text-decoration: underline;
+      }
+
+      .file-delete:hover {
+        text-decoration: none;
+      }
+
+      .instruction {
+        font-size: 12px;
+        color: #7f8c8d;
+        margin-top: 5px;
+        line-height: 1.4;
+      }
+
+      .action-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 30px;
+      }
+
+      .error-message {
+        color: #e74c3c;
+        font-size: 12px;
+        margin-top: 5px;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 0 15px;
+        }
+
+        .content-section {
+          padding: 20px;
+        }
+
+        .form-table th,
+        .form-table td {
+          padding: 15px;
+        }
+
+        .header-content {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 15px;
+        }
+
+        .action-buttons {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 헤더 -->
+    <div class="header">
+      <div class="container">
+        <div class="header-content">
+          <div>
+            <div class="breadcrumb">
+              <a href="/">홈</a> > <a href="/disclosure">고객센터</a> >
+              공시자료실
+            </div>
+            <h1>※공시자료실</h1>
+          </div>
+          <div>
+            <a href="/admin/announcements/list" class="btn">← 목록</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- 공시자료 등록 폼 -->
+      <div class="content-section">
+        <form
+          th:action="@{/admin/announcements/create}"
+          method="post"
+          enctype="multipart/form-data"
+          id="announcementForm"
+        >
+          <table class="form-table">
+            <tr>
+              <th>상품명</th>
+              <td>
+                <input
+                  type="text"
+                  name="title"
+                  class="form-input"
+                  placeholder="공시자료 제목을 입력하세요"
+                  required
+                />
+                <div
+                  class="error-message"
+                  th:if="${titleError}"
+                  th:text="${titleError}"
+                ></div>
+              </td>
+            </tr>
+            <tr>
+              <th>PDF 첨부파일</th>
+              <td>
+                <div
+                  class="file-upload-area"
+                  onclick="document.getElementById('pdfFile').click()"
+                >
+                  <div class="file-info" id="pdfFileInfo">
+                    <span class="file-name" id="pdfFileName"></span>
+                    <span
+                      class="file-delete"
+                      onclick="removeFile('pdfFile', 'pdfFileInfo')"
+                      >파일삭제</span
+                    >
+                  </div>
+                  <div id="pdfFilePlaceholder">
+                    <button type="button" class="file-btn">파일 선택</button>
+                    <div class="instruction">
+                      * PDF 파일을 등록하여 주세요.<br />
+                      (업로드시에는 가급적 영문이며, 특수기호가 없게 이름을
+                      바꿔서 올려주세요)
+                    </div>
+                  </div>
+                </div>
+                <input
+                  type="file"
+                  name="pdfFile"
+                  id="pdfFile"
+                  class="file-input"
+                  accept=".pdf"
+                  onchange="handleFileSelect(this, 'pdfFileInfo', 'pdfFileName')"
+                />
+              </td>
+            </tr>
+            <tr>
+              <th>MS WORD 첨부파일</th>
+              <td>
+                <div
+                  class="file-upload-area"
+                  onclick="document.getElementById('wordFile').click()"
+                >
+                  <div class="file-info" id="wordFileInfo">
+                    <span class="file-name" id="wordFileName"></span>
+                    <span
+                      class="file-delete"
+                      onclick="removeFile('wordFile', 'wordFileInfo')"
+                      >파일삭제</span
+                    >
+                  </div>
+                  <div id="wordFilePlaceholder">
+                    <button type="button" class="file-btn">파일 선택</button>
+                    <div class="instruction">
+                      * MS WORD 파일을 등록하여 주세요.<br />
+                      (업로드시에는 가급적 영문이며, 특수기호가 없게 이름을
+                      바꿔서 올려주세요)
+                    </div>
+                  </div>
+                </div>
+                <input
+                  type="file"
+                  name="wordFile"
+                  id="wordFile"
+                  class="file-input"
+                  accept=".doc,.docx"
+                  onchange="handleFileSelect(this, 'wordFileInfo', 'wordFileName')"
+                />
+              </td>
+            </tr>
+            <tr>
+              <th>한글문서 첨부파일</th>
+              <td>
+                <div
+                  class="file-upload-area"
+                  onclick="document.getElementById('hwpFile').click()"
+                >
+                  <div class="file-info" id="hwpFileInfo">
+                    <span class="file-name" id="hwpFileName"></span>
+                    <span
+                      class="file-delete"
+                      onclick="removeFile('hwpFile', 'hwpFileInfo')"
+                      >파일삭제</span
+                    >
+                  </div>
+                  <div id="hwpFilePlaceholder">
+                    <button type="button" class="file-btn">파일 선택</button>
+                    <div class="instruction">
+                      * 한글문서 파일을 등록하여 주세요.<br />
+                      (업로드시에는 가급적 영문이며, 특수기호가 없게 이름을
+                      바꿔서 올려주세요)
+                    </div>
+                  </div>
+                </div>
+                <input
+                  type="file"
+                  name="hwpFile"
+                  id="hwpFile"
+                  class="file-input"
+                  accept=".hwp"
+                  onchange="handleFileSelect(this, 'hwpFileInfo', 'hwpFileName')"
+                />
+              </td>
+            </tr>
+            <tr>
+              <th>상세 설명</th>
+              <td>
+                <div style="background: #e8f4f8; padding: 10px; border-radius: 5px; margin-bottom: 10px; font-size: 12px; color: #2c3e50;">
+                  💡 SmartEditor를 사용하여 공시자료에 대한 상세한 설명을 작성할 수 있습니다. 마크다운, 이미지 첨부 등 다양한 서식을 지원합니다.
+                </div>
+                <textarea
+                  id="content"
+                  name="content"
+                  placeholder="공시자료에 대한 상세 설명을 입력하세요..."
+                  style="width: 100%; min-height: 400px; border: 1px solid #ddd; border-radius: 5px; padding: 12px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 14px;"
+                ></textarea>
+              </td>
+            </tr>
+          </table>
+
+          <div class="action-buttons">
+            <a href="/admin/announcements/list" class="btn btn-secondary"
+              >목록</a
+            >
+            <button type="submit" class="btn btn-primary">등록</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      let oEditors = [];
+
+      // SmartEditor2 초기화
+      document.addEventListener('DOMContentLoaded', function() {
+        nhn.husky.EZCreator.createInIFrame({
+          oAppRef: oEditors,
+          elPlaceHolder: "content",
+          sSkinURI: "/smarteditor/SmartEditor2Skin.html",
+          fCreator: "createSEditor2",
+          htParams: {
+            bUseToolbar: true,
+            bUseVerticalResizer: true,
+            bUseModeChanger: true,
+            fOnBeforeUnload: function() {}
+          }
+        });
+      });
+
+      // 파일 선택 처리
+      function handleFileSelect(input, infoId, nameId) {
+        const file = input.files[0];
+        if (file) {
+          document.getElementById(nameId).textContent = file.name;
+          document.getElementById(infoId).classList.add("show");
+          document.getElementById(
+            infoId.replace("Info", "Placeholder")
+          ).style.display = "none";
+        }
+      }
+
+      // 파일 삭제 처리
+      function removeFile(inputId, infoId) {
+        document.getElementById(inputId).value = "";
+        document.getElementById(infoId).classList.remove("show");
+        document.getElementById(
+          infoId.replace("Info", "Placeholder")
+        ).style.display = "block";
+      }
+
+      // 드래그 앤 드롭 기능
+      document.querySelectorAll(".file-upload-area").forEach((area) => {
+        area.addEventListener("dragover", function (e) {
+          e.preventDefault();
+          this.classList.add("dragover");
+        });
+
+        area.addEventListener("dragleave", function (e) {
+          e.preventDefault();
+          this.classList.remove("dragover");
+        });
+
+        area.addEventListener("drop", function (e) {
+          e.preventDefault();
+          this.classList.remove("dragover");
+
+          const files = e.dataTransfer.files;
+          if (files.length > 0) {
+            const file = files[0];
+            const input = this.querySelector('input[type="file"]');
+            input.files = files;
+
+            const infoId = input.id + "Info";
+            const nameId = input.id + "FileName";
+            handleFileSelect(input, infoId, nameId);
+          }
+        });
+      });
+
+      // 폼 유효성 검사
+      document
+        .getElementById("announcementForm")
+        .addEventListener("submit", function (e) {
+          const title = document
+            .querySelector('input[name="title"]')
+            .value.trim();
+
+          if (!title) {
+            e.preventDefault();
+            alert("상품명을 입력해주세요.");
+            return;
+          }
+
+          const pdfFile = document.getElementById("pdfFile").files[0];
+          const wordFile = document.getElementById("wordFile").files[0];
+          const hwpFile = document.getElementById("hwpFile").files[0];
+
+          if (!pdfFile && !wordFile && !hwpFile) {
+            e.preventDefault();
+            alert("최소 하나의 파일을 업로드해주세요.");
+            return;
+          }
+
+          // SmartEditor 내용 동기화
+          if (oEditors.length > 0) {
+            oEditors[0].exec("UPDATE_CONTENTS_FIELD", []);
+          }
+        });
+    </script>
+  </body>
+</html>

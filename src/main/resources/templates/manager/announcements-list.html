@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공시자료 관리 - A+Life</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 28px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            background: white;
+            color: #e74c3c;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn-primary {
+            background: #27ae60;
+            color: white;
+            margin-left: 10px;
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+
+        .btn-edit {
+            background: #3498db;
+            color: white;
+            padding: 5px 10px;
+            font-size: 12px;
+            margin-right: 5px;
+        }
+
+        .table-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .table-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #34495e;
+            color: white;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        tbody tr:hover {
+            background: #f9f9f9;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .empty-state .icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 20px;
+        }
+
+        .pagination a,
+        .pagination span {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .pagination a:hover {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .pagination .active {
+            background: #e74c3c;
+            color: white;
+            border-color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="container">
+        <div class="header-content">
+            <div>
+                <h1>📋 공시자료 관리</h1>
+                <p style="color: rgba(255,255,255,0.8); margin-top: 5px;">사업보고서, 분기보고서 등 공시자료를 관리하세요.</p>
+            </div>
+            <div>
+                <a href="/admin" class="btn">← 돌아가기</a>
+                <a href="/admin/announcements/create" class="btn btn-primary">+ 새 공시자료 등록</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="table-container">
+        <div class="table-actions">
+            <h2 style="color: #333;">공시자료 목록</h2>
+            <span style="color: #666;">총 <strong th:text="${#lists.size(announcements) ?: 0}">0</strong>건</span>
+        </div>
+
+        <!-- 공시자료 목록 테이블 -->
+        <div th:if="${announcements != null && #lists.size(announcements) > 0}">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 10%;">번호</th>
+                        <th style="width: 45%;">제목</th>
+                        <th style="width: 20%;">파일명</th>
+                        <th style="width: 15%;">등록일</th>
+                        <th style="width: 10%;">관리</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="item, stat : ${announcements}">
+                        <td th:text="${stat.count}">1</td>
+                        <td th:text="${item.title}">제목</td>
+                        <td th:text="${item.fileName}">파일명.pdf</td>
+                        <td th:text="${#temporals.format(item.rDate, 'yyyy-MM-dd HH:mm')}">2025-03-28 06:42</td>
+                        <td>
+                            <a th:href="@{/admin/announcements/edit/{id}(id=${item.idx})}" class="btn btn-edit">수정</a>
+                            <a th:href="@{/admin/announcements/delete/{id}(id=${item.idx})}" class="btn btn-danger" onclick="return confirm('삭제하시겠습니까?');">삭제</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 공시자료 없음 -->
+        <div th:if="${announcements == null || #lists.size(announcements) == 0}" class="empty-state">
+            <div class="icon">📭</div>
+            <h3>공시자료가 없습니다</h3>
+            <p>새로운 공시자료를 등록해주세요.</p>
+            <a href="/admin/announcements/create" class="btn btn-primary" style="margin-top: 20px;">+ 공시자료 등록</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

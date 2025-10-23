@@ -50,6 +50,11 @@ spring:
       enabled: true
       force: true
 
+# 파일 업로드 설정
+file:
+  upload:
+    path: C:\apluslife\uploads  # 파일 업로드 저장 경로
+
 # 로깅 공통 설정
 logging:
   charset:

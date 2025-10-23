@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <!-- 사이드바 fragment -->
+    <aside th:fragment="sidebar" class="sidebar">
+      <h2>👨‍💼 관리 메뉴</h2>
+      <ul class="sidebar-menu">
+        <!-- 회원 관리 그룹 (맨 위) -->
+        <li class="menu-item">
+          <a href="#users">👥 회원 관리</a>
+          <ul class="submenu">
+            <li><a href="/admin/users/list">회원 목록</a></li>
+            <li><a href="/admin/users/stats">통계</a></li>
+          </ul>
+        </li>
+
+        <!-- A+Life 소식 그룹 -->
+        <li
+          style="
+            padding: 10px 20px;
+            margin-top: 15px;
+            font-size: 12px;
+            color: #95a5a6;
+            font-weight: bold;
+            text-transform: uppercase;
+          "
+        >
+          📢 A+Life 소식
+        </li>
+        <li class="menu-item">
+          <a href="#news">📰 라이프뉴스 관리</a>
+          <ul class="submenu">
+            <li><a href="/admin/news/list">목록</a></li>
+            <li><a href="/admin/news/create">등록</a></li>
+          </ul>
+        </li>
+
+        <li class="menu-item">
+          <a href="#notice">🔔 부고알림 관리</a>
+          <ul class="submenu">
+            <li><a href="/admin/notice/list">목록</a></li>
+            <li><a href="/admin/notice/create">등록</a></li>
+          </ul>
+        </li>
+
+        <li class="menu-item">
+          <a href="#etc">📑 기타 관리</a>
+          <ul class="submenu">
+            <li><a href="/admin/etc/list">목록</a></li>
+            <li><a href="/admin/etc/create">등록</a></li>
+          </ul>
+        </li>
+
+        <!-- 경영현황 그룹 -->
+        <li
+          style="
+            padding: 10px 20px;
+            margin-top: 10px;
+            font-size: 12px;
+            color: #95a5a6;
+            font-weight: bold;
+            text-transform: uppercase;
+          "
+        >
+          📊 경영현황
+        </li>
+        <li class="menu-item">
+          <a href="#announcements">📋 공시자료 관리</a>
+          <ul class="submenu">
+            <li><a href="/admin/announcements/list">목록</a></li>
+            <li><a href="/admin/announcements/create">등록</a></li>
+          </ul>
+        </li>
+
+        <!-- 고객센터 그룹 -->
+        <li
+          style="
+            padding: 10px 20px;
+            margin-top: 15px;
+            font-size: 12px;
+            color: #95a5a6;
+            font-weight: bold;
+            text-transform: uppercase;
+          "
+        >
+          💬 고객센터
+        </li>
+        <li class="menu-item">
+          <a href="#reviews">⭐ 이용후기 관리</a>
+          <ul class="submenu">
+            <li><a href="/admin/reviews/list">목록</a></li>
+            <li><a href="/admin/reviews/manage">관리</a></li>
+          </ul>
+        </li>
+
+        <li class="menu-item">
+          <a href="#faq">❓ 자주하는질문 관리</a>
+          <ul class="submenu">
+            <li><a href="/admin/faq/list">목록</a></li>
+            <li><a href="/admin/faq/create">등록</a></li>
+          </ul>
+        </li>
+
+        <!-- 전환서비스 그룹 (향후) -->
+        <li
+          style="
+            padding: 10px 20px;
+            margin-top: 15px;
+            font-size: 12px;
+            color: #95a5a6;
+            font-weight: bold;
+            text-transform: uppercase;
+          "
+        >
+          🔄 전환서비스
+        </li>
+        <li class="menu-item">
+          <a href="#conversion-category">🏷️ 카테고리 관리</a>
+          <ul class="submenu">
+            <li><a href="/admin/conversion/category/list">목록</a></li>
+            <li><a href="/admin/conversion/category/create">등록</a></li>
+          </ul>
+        </li>
+
+        <li class="menu-item">
+          <a href="#conversion-product">📦 상품 관리</a>
+          <ul class="submenu">
+            <li><a href="/admin/conversion/product/list">목록</a></li>
+            <li><a href="/admin/conversion/product/create">등록</a></li>
+          </ul>
+        </li>
+
+        <!-- 기타 관리 그룹 -->
+        <li
+          style="
+            padding: 10px 20px;
+            margin-top: 15px;
+            font-size: 12px;
+            color: #95a5a6;
+            font-weight: bold;
+            text-transform: uppercase;
+          "
+        >
+          ⚙️ 기타
+        </li>
+        <li class="menu-item">
+          <a href="#partners">🤝 제휴업체 관리</a>
+          <ul class="submenu">
+            <li><a href="/admin/partners/list">목록</a></li>
+            <li><a href="/admin/partners/create">등록</a></li>
+          </ul>
+        </li>
+
+        <li class="menu-item">
+          <a href="#popup">🎯 팝업 관리</a>
+          <ul class="submenu">
+            <li><a href="/admin/popup/list">목록</a></li>
+            <li><a href="/admin/popup/create">등록</a></li>
+          </ul>
+        </li>
+
+        <li class="menu-item">
+          <a href="#settings">⚙️ 시스템 설정</a>
+          <ul class="submenu">
+            <li><a href="/admin/settings/general">기본 설정</a></li>
+            <li><a href="/admin/settings/security">보안 설정</a></li>
+          </ul>
+        </li>
+      </ul>
+    </aside>
+  </body>
+</html>

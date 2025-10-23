@@ -24,7 +24,7 @@ public class MemberService {
     /**
      * 통합 로그인 처리
      * 1. admin 테이블에서 평문 비밀번호로 조회 시도
-     * 2. 없으면 member 테이블에서 암호화된 비밀번호로 조회 시도
+     * 2. 없으면 member 테이블에서 PWDCOMPARE를 사용하여 암호화된 비밀번호로 조회 시도
      *
      * @param request 로그인 요청 정보
      * @param session HTTP 세션

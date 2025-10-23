@@ -1,140 +1,471 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>관리자 페이지 - A+Life</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f7fa;
-        }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: #f5f7fa;
+      }
 
-        .header {
-            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-            color: white;
-            padding: 20px 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
+      .wrapper {
+        display: flex;
+        min-height: 100vh;
+      }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+      .sidebar {
+        width: 250px;
+        background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        color: white;
+        padding: 20px 0;
+        position: fixed;
+        height: 100vh;
+        overflow-y: auto;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+      }
 
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+      .sidebar h2 {
+        padding: 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: 18px;
+      }
 
-        h1 {
-            font-size: 28px;
-        }
+      .sidebar-menu {
+        list-style: none;
+        padding: 0;
+      }
 
-        .btn {
-            padding: 8px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            background: white;
-            color: #e74c3c;
+      .menu-item {
+        display: block;
+      }
+
+      .menu-item > a {
+        display: block;
+        padding: 15px 20px;
+        color: #ecf0f1;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border-left: 3px solid transparent;
+      }
+
+      .menu-item > a:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-left-color: #e74c3c;
+        padding-left: 25px;
+      }
+
+      .menu-item > a.active {
+        background: rgba(231, 76, 60, 0.3);
+        border-left-color: #e74c3c;
+        color: #fff;
+        font-weight: bold;
+      }
+
+      .submenu {
+        list-style: none;
+        padding: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+      }
+
+      .menu-item.open .submenu {
+        max-height: 500px;
+      }
+
+      .submenu li a {
+        display: block;
+        padding: 10px 20px 10px 45px;
+        color: #bdc3c7;
+        text-decoration: none;
+        font-size: 14px;
+        transition: all 0.3s ease;
+      }
+
+      .submenu li a:hover {
+        color: #ecf0f1;
+        padding-left: 50px;
+      }
+
+      .main-content {
+        margin-left: 250px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .header {
+        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        color: white;
+        padding: 20px 0;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        width: 100%;
+      }
+
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+
+      .btn {
+        padding: 8px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        background: white;
+        color: #e74c3c;
+        font-weight: bold;
+      }
+
+      .btn:hover {
+        opacity: 0.9;
+      }
+
+      .header-actions {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+      }
+
+      .admin-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(255, 255, 255, 0.15);
+        padding: 8px 15px;
+        border-radius: 5px;
+        color: white;
+        font-size: 14px;
+      }
+
+      .admin-info strong {
+        font-weight: 600;
+        color: #fff;
+      }
+
+      .btn-logout {
+        background: #c0392b;
+        color: white;
+        padding: 8px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+        font-size: 14px;
+        transition: all 0.3s;
+      }
+
+      .btn-logout:hover {
+        background: #a93226;
+        opacity: 1;
+      }
+
+      .page-content {
+        padding: 40px 20px;
+        flex: 1;
+      }
+
+      .dashboard {
+        background: white;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .dashboard .icon {
+        font-size: 60px;
+        margin-bottom: 20px;
+      }
+
+      .dashboard h2 {
+        color: #333;
+        margin-bottom: 15px;
+      }
+
+      .dashboard p {
+        color: #666;
+        line-height: 1.6;
+      }
+
+      .menu-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        margin-top: 30px;
+      }
+
+      .menu-card {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .menu-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      .menu-card a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .menu-card .icon {
+        font-size: 40px;
+        margin-bottom: 15px;
+      }
+
+      .menu-card h3 {
+        color: #e74c3c;
+        margin-bottom: 10px;
+        font-size: 18px;
+      }
+
+      .menu-card p {
+        color: #666;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .status-badge {
+        display: inline-block;
+        padding: 4px 12px;
+        background: #27ae60;
+        color: white;
+        border-radius: 20px;
+        font-size: 12px;
+        margin-top: 10px;
+      }
+
+      @media (max-width: 768px) {
+        .sidebar {
+          width: 200px;
         }
 
         .main-content {
-            padding: 40px 20px;
+          margin-left: 200px;
         }
 
-        .admin-card {
-            background: white;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
+        .menu-grid {
+          grid-template-columns: 1fr;
         }
 
-        .admin-card .icon {
-            font-size: 60px;
-            margin-bottom: 20px;
+        .header-actions {
+          flex-direction: column;
+          gap: 8px;
+          width: 100%;
         }
 
-        .admin-card h2 {
-            color: #333;
-            margin-bottom: 15px;
+        .admin-info {
+          width: 100%;
+          justify-content: center;
+          background: rgba(255, 255, 255, 0.2);
         }
 
-        .admin-card p {
-            color: #666;
-            line-height: 1.6;
+        .btn-logout {
+          width: 100%;
+          text-align: center;
         }
-
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .feature-item {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .feature-item h3 {
-            color: #e74c3c;
-            margin-bottom: 10px;
-        }
+      }
     </style>
-</head>
-<body>
-<div class="header">
-    <div class="container">
-        <div class="header-content">
-            <h1>👨‍💼 관리자 페이지</h1>
-            <a href="/" class="btn">홈으로</a>
-        </div>
-    </div>
-</div>
+  </head>
+  <body>
+    <div class="wrapper">
+      <!-- 사이드바 replace -->
+      <div th:replace="fragments/sidebar.html :: sidebar"></div>
 
-<div class="main-content">
-    <div class="container">
-        <div class="admin-card">
-            <div class="icon">🛡️</div>
-            <h2>관리자 전용 페이지</h2>
-            <p>안녕하세요, <strong th:text="${username}">관리자</strong>님</p>
-            <p>이 페이지는 ROLE_ADMIN 권한을 가진 사용자만 접근할 수 있습니다.</p>
-        </div>
+      <!-- 메인 콘텐츠 -->
+      <div class="main-content">
+        <!-- 헤더 replace -->
+        <div th:replace="fragments/header.html :: header"></div>
 
-        <div class="features">
-            <div class="feature-item">
-                <h3>✅ 접근 권한 확인</h3>
-                <p>관리자 권한이 정상적으로 작동합니다.</p>
+        <!-- 페이지 내용 -->
+        <div class="page-content">
+          <div class="container">
+            <!-- 대시보드 -->
+            <div class="dashboard">
+              <div class="icon">🛡️</div>
+              <h2>관리자 전용 페이지</h2>
+              <p>안녕하세요, <strong th:text="${username}">관리자</strong>님</p>
+              <p>A+Life 관리 시스템에 접속했습니다.</p>
+              <div class="status-badge">✓ 관리자 권한 활성화</div>
             </div>
-            <div class="feature-item">
-                <h3>🔐 Spring Security</h3>
-                <p>hasRole('ADMIN') 권한 검증 완료</p>
+
+            <!-- 관리 메뉴 그리드 -->
+            <h2 style="margin-bottom: 30px; color: #2c3e50">📊 경영현황</h2>
+            <div class="menu-grid">
+              <!-- 공시자료 관리 -->
+              <div class="menu-card">
+                <a href="/admin/announcements/list">
+                  <div class="icon">📋</div>
+                  <h3>공시자료 관리</h3>
+                  <p>사업보고서, 분기보고서 등 공시자료 관리</p>
+                  <div class="status-badge">✓ 활성화</div>
+                </a>
+              </div>
             </div>
-            <div class="feature-item">
-                <h3>📊 사용자 관리</h3>
-                <p>향후 사용자 관리 기능 추가 예정</p>
+
+            <h2 style="margin-top: 40px; margin-bottom: 30px; color: #2c3e50">
+              📢 A+Life 소식
+            </h2>
+            <div class="menu-grid">
+              <!-- 라이프뉴스 관리 -->
+              <div class="menu-card">
+                <a href="/admin/news/list">
+                  <div class="icon">📰</div>
+                  <h3>라이프뉴스 관리</h3>
+                  <p>회사 소식 및 뉴스 관리</p>
+                  <div class="status-badge">✓ 구현됨</div>
+                </a>
+              </div>
+
+              <!-- 부고알림 관리 -->
+              <div class="menu-card">
+                <a href="/admin/notice/list">
+                  <div class="icon">🔔</div>
+                  <h3>부고알림 관리</h3>
+                  <p>부고 알림 관리</p>
+                  <div class="status-badge">준비중</div>
+                </a>
+              </div>
+
+              <!-- 기타 관리 -->
+              <div class="menu-card">
+                <a href="/admin/etc/list">
+                  <div class="icon">📑</div>
+                  <h3>기타 관리</h3>
+                  <p>기타 자료 관리</p>
+                  <div class="status-badge">준비중</div>
+                </a>
+              </div>
             </div>
-            <div class="feature-item">
-                <h3>⚙️ 시스템 설정</h3>
-                <p>시스템 설정 관리 기능 추가 예정</p>
+
+            <h2 style="margin-top: 40px; margin-bottom: 30px; color: #2c3e50">
+              💬 고객센터
+            </h2>
+            <div class="menu-grid">
+              <!-- 이용후기 관리 -->
+              <div class="menu-card">
+                <a href="/admin/reviews/list">
+                  <div class="icon">⭐</div>
+                  <h3>이용후기 관리</h3>
+                  <p>사용자 후기 관리</p>
+                  <div class="status-badge">준비중</div>
+                </a>
+              </div>
+
+              <!-- 자주하는질문 관리 -->
+              <div class="menu-card">
+                <a href="/admin/faq/list">
+                  <div class="icon">❓</div>
+                  <h3>자주하는질문 관리</h3>
+                  <p>FAQ 관리</p>
+                  <div class="status-badge">준비중</div>
+                </a>
+              </div>
             </div>
+
+            <h2 style="margin-top: 40px; margin-bottom: 30px; color: #2c3e50">
+              🔄 전환서비스
+            </h2>
+            <div class="menu-grid">
+              <!-- 카테고리 관리 -->
+              <div class="menu-card">
+                <a href="/admin/conversion/category/list">
+                  <div class="icon">🏷️</div>
+                  <h3>카테고리 관리</h3>
+                  <p>전환서비스 카테고리 관리</p>
+                  <div class="status-badge">준비중</div>
+                </a>
+              </div>
+
+              <!-- 상품 관리 -->
+              <div class="menu-card">
+                <a href="/admin/conversion/product/list">
+                  <div class="icon">📦</div>
+                  <h3>상품 관리</h3>
+                  <p>전환서비스 상품 관리</p>
+                  <div class="status-badge">준비중</div>
+                </a>
+              </div>
+            </div>
+
+            <h2 style="margin-top: 40px; margin-bottom: 30px; color: #2c3e50">
+              ⚙️ 기타
+            </h2>
+            <div class="menu-grid">
+              <!-- 제휴업체 관리 -->
+              <div class="menu-card">
+                <a href="/admin/partners/list">
+                  <div class="icon">🤝</div>
+                  <h3>제휴업체 관리</h3>
+                  <p>제휴업체 정보 관리</p>
+                  <div class="status-badge">준비중</div>
+                </a>
+              </div>
+
+              <!-- 팝업 관리 -->
+              <div class="menu-card">
+                <a href="/admin/popup/list">
+                  <div class="icon">🎯</div>
+                  <h3>팝업 관리</h3>
+                  <p>팝업 배너 관리</p>
+                  <div class="status-badge">준비중</div>
+                </a>
+              </div>
+
+              <!-- 회원 관리 -->
+              <div class="menu-card">
+                <a href="/admin/users/list">
+                  <div class="icon">👥</div>
+                  <h3>회원 관리</h3>
+                  <p>회원 정보 및 통계 관리</p>
+                  <div class="status-badge">준비중</div>
+                </a>
+              </div>
+
+              <!-- 시스템 설정 -->
+              <div class="menu-card">
+                <a href="/admin/settings/general">
+                  <div class="icon">⚙️</div>
+                  <h3>시스템 설정</h3>
+                  <p>시스템 설정 및 보안 관리</p>
+                  <div class="status-badge">준비중</div>
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-</div>
-</body>
+
+    <script th:include="fragments/scripts.html :: admin-scripts"></script>
+  </body>
 </html>

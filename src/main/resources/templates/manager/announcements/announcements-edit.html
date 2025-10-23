@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>공시자료 수정 - A+Life</title>
+    <!-- SmartEditor2 -->
+    <script type="text/javascript" th:src="@{/smarteditor/js/HuskyEZCreator.js}" charset="UTF-8"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: #f5f7fa;
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .header {
+        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        color: white;
+        padding: 20px 0;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .breadcrumb {
+        font-size: 14px;
+        opacity: 0.9;
+      }
+
+      .breadcrumb a {
+        color: white;
+        text-decoration: none;
+      }
+
+      h1 {
+        font-size: 28px;
+        margin-top: 10px;
+      }
+
+      .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        background: white;
+        color: #e74c3c;
+        font-weight: bold;
+        transition: all 0.3s;
+        margin-left: 10px;
+      }
+
+      .btn-primary {
+        background: #27ae60;
+        color: white;
+      }
+
+      .btn-secondary {
+        background: #95a5a6;
+        color: white;
+      }
+
+      .content-section {
+        background: white;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+      }
+
+      .form-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .form-table th {
+        background: #f8f9fa;
+        padding: 20px;
+        text-align: left;
+        font-weight: 600;
+        color: #2c3e50;
+        border: 1px solid #dee2e6;
+        width: 200px;
+        vertical-align: top;
+      }
+
+      .form-table td {
+        padding: 20px;
+        border: 1px solid #dee2e6;
+        background: white;
+      }
+
+      .form-input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 14px;
+      }
+
+      .file-upload-area {
+        border: 2px dashed #ddd;
+        border-radius: 5px;
+        padding: 20px;
+        text-align: center;
+        background: #fafafa;
+        transition: all 0.3s;
+      }
+
+      .file-input {
+        display: none;
+      }
+
+      .file-btn {
+        background: #3498db;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      .file-info {
+        margin-top: 10px;
+        padding: 10px;
+        background: #e8f5e8;
+        border-radius: 5px;
+        display: none;
+      }
+
+      .file-info.show {
+        display: block;
+      }
+
+      .instruction {
+        font-size: 12px;
+        color: #7f8c8d;
+        margin-top: 5px;
+      }
+
+      .action-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 30px;
+      }
+
+      @media (max-width: 768px) {
+        .action-buttons {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div class="container">
+        <div class="header-content">
+          <div>
+            <div class="breadcrumb">
+              <a href="/">홈</a> > <a href="/admin/announcements/list">공시자료</a> > 수정
+            </div>
+            <h1>공시자료 수정</h1>
+          </div>
+          <div>
+            <a href="/admin/announcements/list" class="btn">← 목록</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="content-section">
+        <form th:action="@{/admin/announcements/edit/{idx}(idx=${announcement.idx})}" method="post" enctype="multipart/form-data" id="announcementForm">
+          <table class="form-table">
+            <tr>
+              <th>제목</th>
+              <td>
+                <input type="text" name="title" class="form-input" th:value="${announcementRequest.title}" placeholder="공시자료 제목을 입력하세요" required />
+              </td>
+            </tr>
+            <tr>
+              <th>첨부 파일 교체</th>
+              <td>
+                <div style="padding: 10px; background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 3px; margin-bottom: 15px;">
+                  <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                    <input type="checkbox" name="replaceFiles" value="true" />
+                    <span>파일 교체 (새로운 파일을 업로드하는 경우 체크)</span>
+                  </label>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th>상세 설명</th>
+              <td>
+                <div style="background: #e8f4f8; padding: 10px; border-radius: 5px; margin-bottom: 10px; font-size: 12px;">
+                  SmartEditor를 사용하여 상세한 설명을 작성할 수 있습니다.
+                </div>
+                <textarea id="content" name="content" placeholder="상세 설명을 입력하세요..." th:text="${announcementRequest.content}" style="width: 100%; min-height: 400px; border: 1px solid #ddd; border-radius: 5px; padding: 12px; font-size: 14px;"></textarea>
+              </td>
+            </tr>
+          </table>
+
+          <div class="action-buttons">
+            <a href="/admin/announcements/list" class="btn btn-secondary">목록</a>
+            <button type="submit" class="btn btn-primary">수정</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      let oEditors = [];
+
+      document.addEventListener('DOMContentLoaded', function() {
+        nhn.husky.EZCreator.createInIFrame({
+          oAppRef: oEditors,
+          elPlaceHolder: "content",
+          sSkinURI: "/smarteditor/SmartEditor2Skin.html",
+          fCreator: "createSEditor2",
+          htParams: {
+            bUseToolbar: true,
+            bUseVerticalResizer: true,
+            bUseModeChanger: true,
+            fOnBeforeUnload: function() {}
+          }
+        });
+      });
+
+      document.getElementById("announcementForm").addEventListener("submit", function (e) {
+        if (oEditors.length > 0) {
+          oEditors[0].exec("UPDATE_CONTENTS_FIELD", []);
+        }
+      });
+    </script>
+  </body>
+</html>

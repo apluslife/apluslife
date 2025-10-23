@@ -144,7 +144,7 @@
   <body>
     <div class="login-container">
       <h1>🔐 A+Life 로그인</h1>
-      <p class="subtitle">관리자 및 사용자 로그인</p>
+      <p class="subtitle">회원 로그인</p>
 
       <div th:if="${error}" class="alert alert-error">
         <span th:text="${error}">오류 메시지</span>
@@ -164,6 +164,7 @@
             placeholder="아이디를 입력하세요"
             required
             autofocus
+            value="admin"
           />
         </div>
 
@@ -175,6 +176,7 @@
             name="password"
             placeholder="비밀번호를 입력하세요"
             required
+            value="apluslife1"
           />
         </div>
 
@@ -182,14 +184,14 @@
       </form>
 
       <div class="test-accounts">
-        <h3>📋 테스트 계정 정보</h3>
-        <div class="account-item">
-          <strong>admin</strong> / apluslife1
-          <span class="role">관리자</span>
-        </div>
-        <div class="account-item">
-          <strong>test4</strong> / 1234
-          <span class="role">일반사용자</span>
+        <h3>📋 링크</h3>
+        <div class="account-item" style="text-align: center">
+          <a
+            href="/admin/login"
+            style="color: #dc3545; text-decoration: none; font-weight: 600"
+          >
+            🔒 관리자 로그인
+          </a>
         </div>
       </div>
     </div>

@@ -21,11 +21,11 @@ public class DataInitializer implements CommandLineRunner {
         // Legacy DB에는 이미 10,865명의 회원 데이터가 존재합니다.
         // 테스트 계정이 필요한 경우 SQL로 직접 추가하세요.
 
-        long memberCount = memberRepository.count();
-        log.info("========================================");
-        log.info("현재 회원 수: {}", memberCount);
-        log.info("Legacy DB 연결 완료!");
-        log.info("========================================");
+        // long memberCount = memberRepository.count();
+        // log.info("========================================");
+        // log.info("현재 회원 수: {}", memberCount);
+        // log.info("Legacy DB 연결 완료!");
+        // log.info("========================================");
 
         // 주의: Legacy DB 스키마에는 manage_level 컬럼이 없습니다.
         // 관리자 권한은 id 필드로 판단합니다 (id='admin' or 'administrator')

@@ -29,6 +29,9 @@ public class MainController {
         return "web/index";
     }
 
+    /**
+     * 회원 로그인 페이지
+     */
     @GetMapping("/login")
     public String login(
             @RequestParam(value = "error", required = false) String error,
@@ -37,7 +40,7 @@ public class MainController {
     ) {
         if (error != null) {
             model.addAttribute("error", "아이디 또는 비밀번호가 올바르지 않습니다.");
-            log.warn("로그인 실패 발생");
+            log.warn("회원 로그인 실패 발생");
         }
 
         if (logout != null) {
@@ -46,6 +49,28 @@ public class MainController {
         }
 
         return "web/login";
+    }
+
+    /**
+     * 관리자 로그인 페이지
+     */
+    @GetMapping("/admin/login")
+    public String adminLogin(
+            @RequestParam(value = "error", required = false) String error,
+            @RequestParam(value = "logout", required = false) String logout,
+            Model model
+    ) {
+        if (error != null) {
+            model.addAttribute("error", "관리자 아이디 또는 비밀번호가 올바르지 않습니다.");
+            log.warn("관리자 로그인 실패 발생");
+        }
+
+        if (logout != null) {
+            model.addAttribute("message", "로그아웃되었습니다.");
+            log.info("관리자 로그아웃 완료");
+        }
+
+        return "manager/login";
     }
 
     // ========================================

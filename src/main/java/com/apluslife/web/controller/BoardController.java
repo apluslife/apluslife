@@ -236,6 +236,97 @@ public class BoardController {
     }
 
     /**
+     * 스마트에디터 이미지 업로드
+     */
+    @PostMapping("/editor/image-upload")
+    @ResponseBody
+    public ResponseEntity<?> uploadEditorImage(@RequestParam("file") MultipartFile file) {
+        try {
+            // 파일 검증
+            if (file.isEmpty()) {
+                return ResponseEntity.badRequest().body("{\"error\": \"파일이 없습니다.\"}");
+            }
+
+            // 이미지 파일인지 확인
+            String contentType = file.getContentType();
+            if (contentType == null || !contentType.startsWith("image/")) {
+                return ResponseEntity.badRequest().body("{\"error\": \"이미지 파일만 업로드 가능합니다.\"}");
+            }
+
+            // 파일 크기 제한 (5MB)
+            if (file.getSize() > 5 * 1024 * 1024) {
+                return ResponseEntity.badRequest().body("{\"error\": \"파일 크기는 5MB를 초과할 수 없습니다.\"}");
+            }
+
+            // 파일 저장
+            String originalFilename = file.getOriginalFilename();
+            String ext = originalFilename != null && originalFilename.contains(".")
+                ? originalFilename.substring(originalFilename.lastIndexOf("."))
+                : "";
+
+            String savedFileName = "editor_" + System.currentTimeMillis() + ext;
+            Path uploadDir = Paths.get(uploadPath, "editor");
+
+            // 디렉토리 생성
+            if (!java.nio.file.Files.exists(uploadDir)) {
+                java.nio.file.Files.createDirectories(uploadDir);
+            }
+
+            Path filePath = uploadDir.resolve(savedFileName);
+            file.transferTo(filePath.toFile());
+
+            // 이미지 URL 반환
+            String imageUrl = "/board/editor/images/" + savedFileName;
+
+            return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body("{\"url\": \"" + imageUrl + "\"}");
+
+        } catch (Exception e) {
+            log.error("이미지 업로드 실패", e);
+            return ResponseEntity.status(500).body("{\"error\": \"이미지 업로드에 실패했습니다.\"}");
+        }
+    }
+
+    /**
+     * 에디터 이미지 보기
+     */
+    @GetMapping("/editor/images/{filename}")
+    public ResponseEntity<Resource> getEditorImage(@PathVariable String filename) {
+        try {
+            Path filePath = Paths.get(uploadPath, "editor", filename);
+            Resource resource = new FileSystemResource(filePath);
+
+            if (!resource.exists()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // 확장자로 Content-Type 결정
+            String contentType = "image/jpeg";
+            String ext = filename.substring(filename.lastIndexOf(".") + 1).toLowerCase();
+            switch (ext) {
+                case "png":
+                    contentType = "image/png";
+                    break;
+                case "gif":
+                    contentType = "image/gif";
+                    break;
+                case "webp":
+                    contentType = "image/webp";
+                    break;
+            }
+
+            return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .body(resource);
+
+        } catch (Exception e) {
+            log.error("이미지 로드 실패", e);
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+    /**
      * 게시판 유형명 반환
      */
     private String getBoardTypeName(String boardType) {

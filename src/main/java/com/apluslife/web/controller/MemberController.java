@@ -18,9 +18,10 @@ public class MemberController {
     private final MemberService memberService;
 
     /**
-     * 회원 로그인 API
+     * 통합 로그인 API
+     * 먼저 관리자 테이블에서 조회하고, 없으면 회원 테이블에서 조회
      *
-     * @param request 로그인 요청 (gubun, id, pw)
+     * @param request 로그인 요청 (id, pw)
      * @param session HTTP 세션
      * @return 로그인 결과
      */
@@ -29,9 +30,9 @@ public class MemberController {
             @RequestBody LoginRequest request,
             HttpSession session) {
 
-        log.info("로그인 요청 - ID: {}, gubun: {}", request.getId(), request.getGubun());
+        log.info("로그인 요청 - ID: {}", request.getId());
 
-        // 로그인 처리
+        // 로그인 처리 (먼저 관리자 조회 → 없으면 회원 조회)
         LoginResponse response = memberService.login(request, session);
 
         return ResponseEntity.ok(response);
