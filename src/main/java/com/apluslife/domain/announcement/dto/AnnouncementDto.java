@@ -20,8 +20,6 @@ public class AnnouncementDto {
 
     private Integer idx;               // 공시자료 ID
     private String title;              // 공시자료 제목
-    private String fileName;           // 첨부 파일명
-    private String filePath;           // 첨부 파일 경로
     private LocalDateTime rDate;       // 등록일시
     private LocalDateTime uDate;       // 수정일시
     private String registrationDate;   // 포맷된 등록일
@@ -33,8 +31,6 @@ public class AnnouncementDto {
         return AnnouncementDto.builder()
                 .idx(announcement.getIdx())
                 .title(announcement.getTitle())
-                .fileName(announcement.getFileName())
-                .filePath(announcement.getFilePath())
                 .rDate(announcement.getRDate())
                 .uDate(announcement.getUDate())
                 .registrationDate(announcement.getRDate() != null ?

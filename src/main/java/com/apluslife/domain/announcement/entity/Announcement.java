@@ -10,10 +10,11 @@ import java.time.LocalDateTime;
 
 /**
  * 공시자료 엔티티
- * 공시자료, 라이프뉴스, 부고알림 등 공지사항 관리
+ * aplus_gongsi 테이블 매핑
+ * SQL: SELECT idx, rdate, title, udate FROM aplus_gongsi
  */
 @Entity
-@Table(name = "aplus_공시자료")
+@Table(name = "aplus_gongsi")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,16 +28,10 @@ public class Announcement {
     @Column(length = 500, nullable = false)
     private String title;
 
-    @Column(length = 255, nullable = false)
-    private String fileName;
-
-    @Column(length = 500, nullable = false)
-    private String filePath;
-
-    @Column(nullable = false, updatable = false)
+    @Column(name = "rdate", nullable = false, updatable = false)
     private LocalDateTime rDate;
 
-    @Column(nullable = false)
+    @Column(name = "udate", nullable = false)
     private LocalDateTime uDate;
 
     @PrePersist

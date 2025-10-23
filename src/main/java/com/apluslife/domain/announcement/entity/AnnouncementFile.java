@@ -23,7 +23,7 @@ public class AnnouncementFile {
     private Integer idx;
 
     @Column(name = "board_idx", nullable = false)
-    private Integer boardIdx;  // 게시글 IDX (공시자료의 idx)
+    private Integer boardIdx;  // 게시글 IDX
 
     @Column(length = 255, nullable = false)
     private String fileName;   // 파일명

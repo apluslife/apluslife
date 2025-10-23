@@ -73,51 +73,16 @@ public class AnnouncementService {
                                      MultipartFile pdfFile,
                                      MultipartFile wordFile,
                                      MultipartFile hwpFile) throws IOException {
-        StringBuilder fileNameBuilder = new StringBuilder();
-        StringBuilder filePathBuilder = new StringBuilder();
-
-        // 파일 업로드 처리
-        int fileCount = 0;
-        if (pdfFile != null && !pdfFile.isEmpty()) {
-            Map<String, Object> fileInfo = fileUtil.saveFile(pdfFile);
-            fileNameBuilder.append("[PDF]").append(fileInfo.get("originalFileName"));
-            filePathBuilder.append((String) fileInfo.get("filePath"));
-            fileCount++;
-        }
-
-        if (wordFile != null && !wordFile.isEmpty()) {
-            if (fileCount > 0) {
-                fileNameBuilder.append(" | ");
-                filePathBuilder.append(" | ");
-            }
-            Map<String, Object> fileInfo = fileUtil.saveFile(wordFile);
-            fileNameBuilder.append("[WORD]").append(fileInfo.get("originalFileName"));
-            filePathBuilder.append((String) fileInfo.get("filePath"));
-            fileCount++;
-        }
-
-        if (hwpFile != null && !hwpFile.isEmpty()) {
-            if (fileCount > 0) {
-                fileNameBuilder.append(" | ");
-                filePathBuilder.append(" | ");
-            }
-            Map<String, Object> fileInfo = fileUtil.saveFile(hwpFile);
-            fileNameBuilder.append("[HWP]").append(fileInfo.get("originalFileName"));
-            filePathBuilder.append((String) fileInfo.get("filePath"));
-            fileCount++;
-        }
-
-        if (fileCount == 0) {
+        // 최소 하나의 파일을 업로드해야 함
+        if ((pdfFile == null || pdfFile.isEmpty()) &&
+            (wordFile == null || wordFile.isEmpty()) &&
+            (hwpFile == null || hwpFile.isEmpty())) {
             throw new IllegalArgumentException("최소 하나의 파일을 업로드해야 합니다.");
         }
 
-        // 공시자료 생성
+        // 공시자료 생성 (aplus_gongsi 테이블에는 idx, title, rdate, udate만 저장)
         Announcement announcement = Announcement.builder()
                 .title(request.getTitle())
-                .fileName(fileNameBuilder.toString())
-                .filePath(filePathBuilder.toString())
-                .rDate(LocalDateTime.now())
-                .uDate(LocalDateTime.now())
                 .build();
 
         Announcement saved = announcementRepository.save(announcement);
@@ -169,48 +134,16 @@ public class AnnouncementService {
         announcement.setTitle(request.getTitle());
         announcement.setUDate(LocalDateTime.now());
 
+        announcementRepository.save(announcement);
+
         // 파일 교체 여부 확인
         if (replaceFiles != null && replaceFiles) {
-            StringBuilder fileNameBuilder = new StringBuilder();
-            StringBuilder filePathBuilder = new StringBuilder();
+            // 기존 파일 삭제
+            announcementFileRepository.deleteByBoardIdx(idx);
 
-            int fileCount = 0;
-            if (pdfFile != null && !pdfFile.isEmpty()) {
-                Map<String, Object> fileInfo = fileUtil.saveFile(pdfFile);
-                fileNameBuilder.append("[PDF]").append(fileInfo.get("originalFileName"));
-                filePathBuilder.append((String) fileInfo.get("filePath"));
-                fileCount++;
-            }
-
-            if (wordFile != null && !wordFile.isEmpty()) {
-                if (fileCount > 0) {
-                    fileNameBuilder.append(" | ");
-                    filePathBuilder.append(" | ");
-                }
-                Map<String, Object> fileInfo = fileUtil.saveFile(wordFile);
-                fileNameBuilder.append("[WORD]").append(fileInfo.get("originalFileName"));
-                filePathBuilder.append((String) fileInfo.get("filePath"));
-                fileCount++;
-            }
-
-            if (hwpFile != null && !hwpFile.isEmpty()) {
-                if (fileCount > 0) {
-                    fileNameBuilder.append(" | ");
-                    filePathBuilder.append(" | ");
-                }
-                Map<String, Object> fileInfo = fileUtil.saveFile(hwpFile);
-                fileNameBuilder.append("[HWP]").append(fileInfo.get("originalFileName"));
-                filePathBuilder.append((String) fileInfo.get("filePath"));
-                fileCount++;
-            }
-
-            if (fileCount > 0) {
-                announcement.setFileName(fileNameBuilder.toString());
-                announcement.setFilePath(filePathBuilder.toString());
-            }
+            // 새 파일 저장
+            saveAnnouncementFiles(idx, pdfFile, wordFile, hwpFile);
         }
-
-        announcementRepository.save(announcement);
     }
 
     /**
@@ -218,20 +151,17 @@ public class AnnouncementService {
      */
     @Transactional
     public void deleteAnnouncement(Integer idx) {
-        Announcement announcement = announcementRepository.findById(idx)
+        announcementRepository.findById(idx)
                 .orElseThrow(() -> new IllegalArgumentException("공시자료를 찾을 수 없습니다."));
 
-        // 기존 파일 삭제
-        if (announcement.getFilePath() != null && !announcement.getFilePath().isEmpty()) {
-            String[] filePaths = announcement.getFilePath().split(" \\| ");
-            for (String filePath : filePaths) {
-                fileUtil.deleteFile(filePath);
-            }
+        // aplus_파일업로드 테이블에서 관련 파일 삭제
+        List<AnnouncementFile> files = announcementFileRepository.findByBoardIdx(idx);
+        for (AnnouncementFile file : files) {
+            fileUtil.deleteFile(file.getFilePath());
         }
-
-        // aplus_파일업로드 테이블에서 관련 파일 정보 삭제
         announcementFileRepository.deleteByBoardIdx(idx);
 
+        // aplus_gongsi 테이블에서 공시자료 삭제
         announcementRepository.deleteById(idx);
     }
 

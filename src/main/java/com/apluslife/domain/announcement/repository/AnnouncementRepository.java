@@ -18,7 +18,7 @@ public interface AnnouncementRepository extends JpaRepository<Announcement, Inte
     /**
      * 최신순으로 공시자료 목록 조회
      */
-    @Query("SELECT a FROM LifeWeb.dbo.aplus_공시자료 a ORDER BY a.rDate DESC")
+    @Query("SELECT a FROM aplus_gongsi a ORDER BY a.rDate DESC")
     List<Announcement> findAllOrderByLatest();
 
     /**
