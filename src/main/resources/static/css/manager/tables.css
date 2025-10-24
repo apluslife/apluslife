@@ -1,0 +1,92 @@
+/* ===== 테이블 스타일 ===== */
+.table-wrapper {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+thead {
+  background: #34495e;
+  color: white;
+}
+
+th {
+  padding: 15px;
+  text-align: left;
+  font-weight: 600;
+}
+
+td {
+  padding: 15px;
+  border-bottom: 1px solid #ecf0f1;
+}
+
+tbody tr:hover {
+  background: #f8f9fa;
+}
+
+/* ===== 폼 테이블 ===== */
+.form-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.form-table th {
+  background: #f8f9fa;
+  padding: 20px;
+  text-align: left;
+  font-weight: 600;
+  color: #2c3e50;
+  border: 1px solid #dee2e6;
+  width: 200px;
+  vertical-align: top;
+}
+
+.form-table td {
+  padding: 20px;
+  border: 1px solid #dee2e6;
+  background: white;
+}
+
+/* ===== 상세 테이블 ===== */
+.detail-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.detail-table th {
+  background: #f8f9fa;
+  padding: 15px;
+  text-align: left;
+  font-weight: 600;
+  color: #2c3e50;
+  border: 1px solid #dee2e6;
+  width: 150px;
+}
+
+.detail-table td {
+  padding: 15px;
+  border: 1px solid #dee2e6;
+  background: white;
+}
+
+/* ===== 반응형 ===== */
+@media (max-width: 768px) {
+  table {
+    font-size: 12px;
+  }
+
+  th,
+  td {
+    padding: 10px;
+  }
+
+  .form-table th,
+  .form-table td {
+    padding: 15px;
+  }
+}
