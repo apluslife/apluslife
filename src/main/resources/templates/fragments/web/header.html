@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <!-- 헤더 fragment -->
+    <div th:fragment="header" class="header">
+      <div class="container">
+        <h1>👨‍💼 관리자 패널</h1>
+        <div class="header-actions">
+          <a href="/" class="btn">홈으로</a>
+          <div class="admin-info">
+            <span>👤 <strong th:text="${username}">관리자</strong></span>
+          </div>
+          <form th:action="@{/admin/logout}" method="post" style="display: inline; margin: 0;">
+            <button type="submit" class="btn-logout" style="border: none; padding: 8px 15px; background: #a93226; color: white; border-radius: 5px; cursor: pointer; text-decoration: none; font-size: 14px; transition: all 0.3s;">🚪 로그아웃</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

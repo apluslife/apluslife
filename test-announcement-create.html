@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>공시자료 등록 - A+Life 관리자</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+        }
+
+        .main-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 250px;
+            height: 80px;
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 0 20px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 20px 0;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 101;
+        }
+
+        .sidebar h2 {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 18px;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding-top: 80px;
+        }
+
+        .content-section {
+            background: white;
+            padding: 40px;
+            margin: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .form-table th {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+            color: #2c3e50;
+            border: 1px solid #dee2e6;
+            width: 200px;
+            vertical-align: top;
+        }
+
+        .form-table td {
+            padding: 20px;
+            border: 1px solid #dee2e6;
+            background: white;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .file-upload-area {
+            border: 2px dashed #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            text-align: center;
+            background: #fafafa;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-upload-area:hover {
+            border-color: #e74c3c;
+            background: #fef9f9;
+        }
+
+        .file-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .file-info {
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            background: #e8f5e8;
+            border-radius: 5px;
+            color: #27ae60;
+        }
+
+        .file-info.show {
+            display: block;
+        }
+
+        .instruction {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .btn-primary {
+            background: #27ae60;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            margin-top: 10px;
+            padding: 10px;
+            background: #ffebee;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-wrapper">
+        <div class="header">
+            <div class="container">
+                <h1>👨‍💼 관리자 패널</h1>
+                <div style="display: flex; gap: 15px; align-items: center;">
+                    <a href="/" style="color: white; text-decoration: none; padding: 8px 20px; background: white; color: #e74c3c; border-radius: 5px; font-weight: bold;">홈으로</a>
+                    <div style="background: rgba(255,255,255,0.15); padding: 8px 15px; border-radius: 5px; color: white;">👤 테스트관리자</div>
+                    <a href="#" style="background: #a93226; color: white; padding: 8px 15px; border: none; border-radius: 5px; text-decoration: none;">🚪 로그아웃</a>
+                </div>
+            </div>
+        </div>
+
+        <aside class="sidebar">
+            <h2>👨‍💼 관리 메뉴</h2>
+            <ul style="list-style: none; padding: 0;">
+                <li style="padding: 15px 20px; color: #ecf0f1; cursor: pointer;">📊 경영현황</li>
+                <li style="padding: 15px 20px; color: white; background: rgba(231,76,60,0.3); border-left: 3px solid #e74c3c;">📋 공시자료 관리</li>
+            </ul>
+        </aside>
+
+        <div class="main-content">
+            <div class="content-section">
+                <h2 style="margin-bottom: 30px; color: #2c3e50;">📋 공시자료 등록</h2>
+
+                <form id="announcementForm" method="post" enctype="multipart/form-data">
+                    <table class="form-table">
+                        <tr>
+                            <th>제목</th>
+                            <td>
+                                <input
+                                    type="text"
+                                    name="title"
+                                    class="form-input"
+                                    placeholder="공시자료 제목을 입력하세요"
+                                    id="titleInput"
+                                    required
+                                />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>PDF 파일</th>
+                            <td>
+                                <div class="file-upload-area" onclick="document.getElementById('pdfFile').click()">
+                                    <div class="file-info" id="pdfFileInfo">
+                                        <span id="pdfFileName">파일 선택됨</span>
+                                    </div>
+                                    <div id="pdfFilePlaceholder">
+                                        <button type="button" class="file-btn">파일 선택</button>
+                                        <div class="instruction">* PDF 파일을 등록하세요</div>
+                                    </div>
+                                </div>
+                                <input type="file" name="pdfFile" id="pdfFile" class="file-input" accept=".pdf" onchange="updateFileInfo(this, 'pdfFileInfo', 'pdfFileName', 'pdfFilePlaceholder')" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>WORD 파일</th>
+                            <td>
+                                <div class="file-upload-area" onclick="document.getElementById('wordFile').click()">
+                                    <div class="file-info" id="wordFileInfo">
+                                        <span id="wordFileName">파일 선택됨</span>
+                                    </div>
+                                    <div id="wordFilePlaceholder">
+                                        <button type="button" class="file-btn">파일 선택</button>
+                                        <div class="instruction">* WORD 파일을 등록하세요</div>
+                                    </div>
+                                </div>
+                                <input type="file" name="wordFile" id="wordFile" class="file-input" accept=".doc,.docx" onchange="updateFileInfo(this, 'wordFileInfo', 'wordFileName', 'wordFilePlaceholder')" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>HWP 파일</th>
+                            <td>
+                                <div class="file-upload-area" onclick="document.getElementById('hwpFile').click()">
+                                    <div class="file-info" id="hwpFileInfo">
+                                        <span id="hwpFileName">파일 선택됨</span>
+                                    </div>
+                                    <div id="hwpFilePlaceholder">
+                                        <button type="button" class="file-btn">파일 선택</button>
+                                        <div class="instruction">* HWP 파일을 등록하세요</div>
+                                    </div>
+                                </div>
+                                <input type="file" name="hwpFile" id="hwpFile" class="file-input" accept=".hwp" onchange="updateFileInfo(this, 'hwpFileInfo', 'hwpFileName', 'hwpFilePlaceholder')" />
+                            </td>
+                        </tr>
+                    </table>
+
+                    <div id="errorMessage" class="error-message" style="display: none;"></div>
+
+                    <div class="action-buttons">
+                        <button type="button" class="btn-secondary" onclick="window.history.back()">목록</button>
+                        <button type="submit" class="btn-primary">등록</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateFileInfo(input, infoId, nameId, placeholderId) {
+            if (input.files && input.files[0]) {
+                document.getElementById(nameId).textContent = input.files[0].name;
+                document.getElementById(infoId).classList.add('show');
+                document.getElementById(placeholderId).style.display = 'none';
+            }
+        }
+
+        document.getElementById('announcementForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const title = document.getElementById('titleInput').value.trim();
+            const pdfFile = document.getElementById('pdfFile').files.length > 0;
+            const wordFile = document.getElementById('wordFile').files.length > 0;
+            const hwpFile = document.getElementById('hwpFile').files.length > 0;
+
+            const errorDiv = document.getElementById('errorMessage');
+
+            if (!title) {
+                errorDiv.textContent = '❌ 제목을 입력해주세요';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            if (!pdfFile && !wordFile && !hwpFile) {
+                errorDiv.textContent = '❌ 최소 하나의 파일을 선택해주세요';
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            errorDiv.style.display = 'none';
+
+            // 실제 등록 처리
+            console.log('폼 제출:', {
+                title: title,
+                pdfFile: pdfFile,
+                wordFile: wordFile,
+                hwpFile: hwpFile
+            });
+
+            // 성공 메시지
+            alert('✅ 공시자료가 등록되었습니다!\n\n제목: ' + title + '\n파일: ' + [pdfFile && 'PDF', wordFile && 'WORD', hwpFile && 'HWP'].filter(Boolean).join(', '));
+        });
+    </script>
+</body>
+</html>

@@ -23,14 +23,42 @@ Sync Impact Report:
 ### II. 도메인 중심 설계 (Domain-Driven Design)
 
 패키지는 기술이 아닌 도메인으로 구성되어야 합니다:
-- `manager/` - 관리자 기능 (관리자 대시보드, 사용자 관리 등)
-- `front/` - 공개 페이지 (메인, 소개, 공지사항 등)
-- `login/` - 인증/인가 (로그인, 회원가입, 비밀번호 재설정)
-- `mypage/` - 사용자 페이지 (프로필, 설정, 활동 내역)
-- `common/` - 공통 기능 (유틸리티, 상수, 공통 컴포넌트)
-- `config/` - 설정 (보안, 데이터베이스, 인프라)
 
-**근거**: 비즈니스 요구사항 변경 시 영향 범위를 최소화하고 팀 간 협업을 용이하게 합니다.
+**1. 역할 기반 Controller 분리**
+- `manager/controller/` - 관리자 기능만 (공시자료, 라이프뉴스, 관리자 대시보드)
+  - `/admin/**` 경로
+  - `@PreAuthorize("hasRole('ADMIN')")` 필수
+
+- `web/controller/` - 공개/회원 기능 (홈, 회사소개, 게시판, 회원정보)
+  - `/`, `/login`, `/board/**`, `/mypage` 등
+  - 공개 또는 `@PreAuthorize("hasRole('USER')")`
+
+**2. 도메인별 Business Logic (Domain Package)**
+- `domain/announcement/` - 공시자료
+- `domain/lifenews/` - 라이프뉴스 (MyBatis 사용)
+- `domain/board/` - 게시판
+- `domain/member/` - 회원 정보
+- `domain/log/` - 로깅
+- 등등...
+
+각 도메인은 명확한 계층 구조:
+```
+domain/{domain-name}/
+├── entity/          # JPA 엔티티
+├── dto/             # 요청/응답 DTO
+├── service/         # 비즈니스 로직
+├── repository/      # JPA Repository
+└── mapper/          # MyBatis Mapper (선택)
+```
+
+**3. 공통 기능**
+- `common/` - 유틸리티, 상수, 공통 컴포넌트
+- `config/` - 보안, 데이터베이스, 인프라 설정
+
+**근거**:
+- 역할별 분리로 보안성 강화
+- 도메인 중심 설계로 비즈니스 요구사항 변경 시 영향 범위 최소화
+- 팀 간 협업 용이 (관리자 기능 개발자 ↔ 회원 기능 개발자 분리)
 
 ### III. 보안 우선 (Security-First) - NON-NEGOTIABLE
 
@@ -86,17 +114,37 @@ Sync Impact Report:
 ## 기술 스택 표준 (Technology Stack Standards)
 
 ### Backend 필수 기술
-- **Framework**: Spring Boot 3.5.6 (Java 17+)
+- **Framework**: Spring Boot 3.2.1 (Java 21)
 - **Security**: Spring Security 6
-- **ORM**: Spring Data JPA + MyBatis 3.0.3
+- **ORM/Data Access**:
+  - Spring Data JPA (신규 개발, 조회/단순 CRUD)
+  - MyBatis 3.0.3 (복잡한 쿼리, 레거시 DB 매핑)
 - **Template Engine**: Thymeleaf 3
 - **Database**: H2 (dev), MSSQL (prod)
-- **Logging**: Log4j2
+- **Logging**: SLF4J + Logback
+- **Build Tool**: Gradle
 
 ### Frontend 필수 기술
-- **UI Framework**: AdminLTE 3.3.11 (관리자), Bootstrap 5 (사용자)
-- **JavaScript**: jQuery
+- **UI Framework**: AdminLTE (관리자), Bootstrap 5 (사용자)
+- **JavaScript**: Vanilla JS (jQuery 최소화)
 - **Template**: Thymeleaf Fragments
+- **CSS**: Inline styles (Fragments 사용 시)
+
+### Database 접근 방식 선택 기준
+
+**Spring Data JPA 사용:**
+- 신규 엔티티 설계
+- 간단한 CRUD 작업
+- 관계형 데이터 (1:N, M:N 매핑)
+- 자동 쿼리 생성이 효율적인 경우
+- 예: `domain/announcement/` (공시자료)
+
+**MyBatis 사용:**
+- 복잡한 SQL 쿼리 (여러 테이블 JOIN)
+- 동적 쿼리 필요
+- 원본 DB 스키마에 정확히 매핑
+- 성능 최적화가 중요한 경우
+- 예: `domain/lifenews/` (라이프뉴스)
 
 **변경 시 요구사항**: 주요 기술 스택 변경은 아키텍처 리뷰 및 팀 승인 필요
 
@@ -124,4 +172,18 @@ Sync Impact Report:
 - `hotfix/*`: 긴급 수정 브랜치
 
 
-**Version**: 1.0.0 | **Ratified**: 2025-01-21 | **Last Amended**: 2025-01-21
+**Version**: 1.1.0 | **Ratified**: 2025-01-21 | **Last Amended**: 2025-10-24
+
+### 개정 내역
+
+**v1.1.0 (2025-10-24)**
+- 도메인 중심 설계에 역할 기반 Controller 분리 추가
+  - `manager/controller/` - 관리자 기능
+  - `web/controller/` - 공개/회원 기능
+- 기술 스택에 Spring Data JPA vs MyBatis 선택 기준 명시
+- Java 버전 업그레이드: 17 → 21
+- Spring Boot 버전 명시: 3.2.1
+- Gradle 빌드 도구 추가
+
+**v1.0.0 (2025-01-21)**
+- 초기 constitution 작성

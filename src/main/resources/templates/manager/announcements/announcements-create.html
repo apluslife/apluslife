@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>공시자료 등록 - A+Life</title>
+    <th:block th:replace="~{fragments/manager/styles}"></th:block>
     <!-- SmartEditor2 -->
     <script
       type="text/javascript"
@@ -11,83 +12,15 @@
       charset="UTF-8"
     ></script>
     <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
-      body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background: #f5f7fa;
-        line-height: 1.6;
-      }
-
-      .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
-      }
-
-      .header {
-        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-        color: white;
-        padding: 20px 0;
-        margin-bottom: 30px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      }
-
-      .header-content {
+      .main-wrapper {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
+        min-height: 100vh;
       }
 
-      .breadcrumb {
-        font-size: 14px;
-        opacity: 0.9;
-      }
-
-      .breadcrumb a {
-        color: white;
-        text-decoration: none;
-      }
-
-      .breadcrumb a:hover {
-        text-decoration: underline;
-      }
-
-      h1 {
-        font-size: 28px;
-        margin-top: 10px;
-      }
-
-      .btn {
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        text-decoration: none;
-        display: inline-block;
-        background: white;
-        color: #e74c3c;
-        font-weight: bold;
-        transition: all 0.3s;
-      }
-
-      .btn:hover {
-        opacity: 0.9;
-      }
-
-      .btn-primary {
-        background: #27ae60;
-        color: white;
-        margin-left: 10px;
-      }
-
-      .btn-secondary {
-        background: #95a5a6;
-        color: white;
+      .main-content {
+        flex: 1;
+        margin-left: 250px;
+        padding-top: 80px;
       }
 
       .content-section {
@@ -95,7 +28,7 @@
         padding: 40px;
         border-radius: 10px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        margin-bottom: 30px;
+        margin: 30px;
       }
 
       .form-table {
@@ -220,9 +153,75 @@
         margin-top: 5px;
       }
 
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #e74c3c;
+      }
+
+      .section-header h2 {
+        color: #2c3e50;
+        font-size: 22px;
+        margin: 0;
+      }
+
+      .section-header .btn {
+        padding: 10px 20px;
+      }
+
+      .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .btn-primary {
+        background: #3498db;
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background: #2980b9;
+      }
+
+      .btn-secondary {
+        background: #95a5a6;
+        color: white;
+      }
+
+      .btn-secondary:hover {
+        background: #7f8c8d;
+      }
+
+      .btn-danger {
+        background: #e74c3c;
+        color: white;
+      }
+
+      .btn-danger:hover {
+        background: #c0392b;
+      }
+
       @media (max-width: 768px) {
-        .container {
-          padding: 0 15px;
+        .main-content {
+          margin-left: 0;
+          padding-top: 80px;
         }
 
         .content-section {
@@ -234,175 +233,183 @@
           padding: 15px;
         }
 
-        .header-content {
+        .action-buttons {
+          flex-direction: column;
+        }
+
+        .section-header {
           flex-direction: column;
           align-items: flex-start;
           gap: 15px;
-        }
-
-        .action-buttons {
-          flex-direction: column;
         }
       }
     </style>
   </head>
   <body>
-    <!-- 헤더 -->
-    <div class="header">
-      <div class="container">
-        <div class="header-content">
-          <div>
-            <div class="breadcrumb">
-              <a href="/">홈</a> > <a href="/disclosure">고객센터</a> >
-              공시자료실
-            </div>
-            <h1>※공시자료실</h1>
-          </div>
-          <div>
-            <a href="/admin/announcements/list" class="btn">← 목록</a>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div class="main-wrapper">
+      <!-- 헤더 include -->
+      <th:block th:replace="~{fragments/manager/header}"></th:block>
 
-    <div class="container">
-      <!-- 공시자료 등록 폼 -->
-      <div class="content-section">
-        <form
-          th:action="@{/admin/announcements/create}"
-          method="post"
-          enctype="multipart/form-data"
-          id="announcementForm"
-        >
-          <table class="form-table">
-            <tr>
-              <th>상품명</th>
-              <td>
-                <input
-                  type="text"
-                  name="title"
-                  class="form-input"
-                  placeholder="공시자료 제목을 입력하세요"
-                  required
-                />
-                <div
-                  class="error-message"
-                  th:if="${titleError}"
-                  th:text="${titleError}"
-                ></div>
-              </td>
-            </tr>
-            <tr>
-              <th>PDF 첨부파일</th>
-              <td>
-                <div
-                  class="file-upload-area"
-                  onclick="document.getElementById('pdfFile').click()"
-                >
-                  <div class="file-info" id="pdfFileInfo">
-                    <span class="file-name" id="pdfFileName"></span>
-                    <span
-                      class="file-delete"
-                      onclick="removeFile('pdfFile', 'pdfFileInfo')"
-                      >파일삭제</span
-                    >
-                  </div>
-                  <div id="pdfFilePlaceholder">
-                    <button type="button" class="file-btn">파일 선택</button>
-                    <div class="instruction">
-                      * PDF 파일을 등록하여 주세요.<br />
-                      (업로드시에는 가급적 영문이며, 특수기호가 없게 이름을
-                      바꿔서 올려주세요)
-                    </div>
-                  </div>
-                </div>
-                <input
-                  type="file"
-                  name="pdfFile"
-                  id="pdfFile"
-                  class="file-input"
-                  accept=".pdf"
-                  onchange="handleFileSelect(this, 'pdfFileInfo', 'pdfFileName')"
-                />
-              </td>
-            </tr>
-            <tr>
-              <th>MS WORD 첨부파일</th>
-              <td>
-                <div
-                  class="file-upload-area"
-                  onclick="document.getElementById('wordFile').click()"
-                >
-                  <div class="file-info" id="wordFileInfo">
-                    <span class="file-name" id="wordFileName"></span>
-                    <span
-                      class="file-delete"
-                      onclick="removeFile('wordFile', 'wordFileInfo')"
-                      >파일삭제</span
-                    >
-                  </div>
-                  <div id="wordFilePlaceholder">
-                    <button type="button" class="file-btn">파일 선택</button>
-                    <div class="instruction">
-                      * MS WORD 파일을 등록하여 주세요.<br />
-                      (업로드시에는 가급적 영문이며, 특수기호가 없게 이름을
-                      바꿔서 올려주세요)
-                    </div>
-                  </div>
-                </div>
-                <input
-                  type="file"
-                  name="wordFile"
-                  id="wordFile"
-                  class="file-input"
-                  accept=".doc,.docx"
-                  onchange="handleFileSelect(this, 'wordFileInfo', 'wordFileName')"
-                />
-              </td>
-            </tr>
-            <tr>
-              <th>한글문서 첨부파일</th>
-              <td>
-                <div
-                  class="file-upload-area"
-                  onclick="document.getElementById('hwpFile').click()"
-                >
-                  <div class="file-info" id="hwpFileInfo">
-                    <span class="file-name" id="hwpFileName"></span>
-                    <span
-                      class="file-delete"
-                      onclick="removeFile('hwpFile', 'hwpFileInfo')"
-                      >파일삭제</span
-                    >
-                  </div>
-                  <div id="hwpFilePlaceholder">
-                    <button type="button" class="file-btn">파일 선택</button>
-                    <div class="instruction">
-                      * 한글문서 파일을 등록하여 주세요.<br />
-                      (업로드시에는 가급적 영문이며, 특수기호가 없게 이름을
-                      바꿔서 올려주세요)
-                    </div>
-                  </div>
-                </div>
-                <input
-                  type="file"
-                  name="hwpFile"
-                  id="hwpFile"
-                  class="file-input"
-                  accept=".hwp"
-                  onchange="handleFileSelect(this, 'hwpFileInfo', 'hwpFileName')"
-                />
-              </td>
-            </tr>
-          </table>
+      <!-- 사이드바 include -->
+      <th:block th:replace="~{fragments/manager/sidebar}"></th:block>
 
-          <div class="action-buttons">
+      <!-- 메인 콘텐츠 -->
+      <div class="main-content">
+        <!-- 메시지 표시 -->
+        <div
+          th:if="${message}"
+          class="alert alert-success"
+          th:text="${message}"
+        ></div>
+        <div
+          th:if="${error}"
+          class="alert alert-error"
+          th:text="${error}"
+        ></div>
+        <!-- 콘텐츠 섹션 -->
+        <div class="content-section">
+          <div class="section-header">
+            <h2>📋 공시자료 등록</h2>
             <a href="/admin/announcements/list" class="btn btn-secondary"
-              >목록</a
+              >📝 목록</a
             >
-            <button type="submit" class="btn btn-primary">등록</button>
           </div>
-        </form>
+          <form
+            th:action="@{/admin/announcements/create}"
+            method="post"
+            enctype="multipart/form-data"
+            id="announcementForm"
+          >
+            <table class="form-table">
+              <tr>
+                <th>상품명</th>
+                <td>
+                  <input
+                    type="text"
+                    name="title"
+                    class="form-input"
+                    placeholder="공시자료 제목을 입력하세요"
+                    required
+                  />
+                  <div
+                    class="error-message"
+                    th:if="${titleError}"
+                    th:text="${titleError}"
+                  ></div>
+                </td>
+              </tr>
+              <tr>
+                <th>PDF 첨부파일</th>
+                <td>
+                  <div
+                    class="file-upload-area"
+                    onclick="document.getElementById('pdfFile').click()"
+                  >
+                    <div class="file-info" id="pdfFileInfo">
+                      <span class="file-name" id="pdfFileName"></span>
+                      <span
+                        class="file-delete"
+                        onclick="removeFile('pdfFile', 'pdfFileInfo')"
+                        >파일삭제</span
+                      >
+                    </div>
+                    <div id="pdfFilePlaceholder">
+                      <button type="button" class="file-btn">파일 선택</button>
+                      <div class="instruction">
+                        * PDF 파일을 등록하여 주세요.<br />
+                        (업로드시에는 가급적 영문이며, 특수기호가 없게 이름을
+                        바꿔서 올려주세요)
+                      </div>
+                    </div>
+                  </div>
+                  <input
+                    type="file"
+                    name="pdfFile"
+                    id="pdfFile"
+                    class="file-input"
+                    accept=".pdf"
+                    onchange="handleFileSelect(this, 'pdfFileInfo', 'pdfFileName')"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <th>MS WORD 첨부파일</th>
+                <td>
+                  <div
+                    class="file-upload-area"
+                    onclick="document.getElementById('wordFile').click()"
+                  >
+                    <div class="file-info" id="wordFileInfo">
+                      <span class="file-name" id="wordFileName"></span>
+                      <span
+                        class="file-delete"
+                        onclick="removeFile('wordFile', 'wordFileInfo')"
+                        >파일삭제</span
+                      >
+                    </div>
+                    <div id="wordFilePlaceholder">
+                      <button type="button" class="file-btn">파일 선택</button>
+                      <div class="instruction">
+                        * MS WORD 파일을 등록하여 주세요.<br />
+                        (업로드시에는 가급적 영문이며, 특수기호가 없게 이름을
+                        바꿔서 올려주세요)
+                      </div>
+                    </div>
+                  </div>
+                  <input
+                    type="file"
+                    name="wordFile"
+                    id="wordFile"
+                    class="file-input"
+                    accept=".doc,.docx"
+                    onchange="handleFileSelect(this, 'wordFileInfo', 'wordFileName')"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <th>한글문서 첨부파일</th>
+                <td>
+                  <div
+                    class="file-upload-area"
+                    onclick="document.getElementById('hwpFile').click()"
+                  >
+                    <div class="file-info" id="hwpFileInfo">
+                      <span class="file-name" id="hwpFileName"></span>
+                      <span
+                        class="file-delete"
+                        onclick="removeFile('hwpFile', 'hwpFileInfo')"
+                        >파일삭제</span
+                      >
+                    </div>
+                    <div id="hwpFilePlaceholder">
+                      <button type="button" class="file-btn">파일 선택</button>
+                      <div class="instruction">
+                        * 한글문서 파일을 등록하여 주세요.<br />
+                        (업로드시에는 가급적 영문이며, 특수기호가 없게 이름을
+                        바꿔서 올려주세요)
+                      </div>
+                    </div>
+                  </div>
+                  <input
+                    type="file"
+                    name="hwpFile"
+                    id="hwpFile"
+                    class="file-input"
+                    accept=".hwp"
+                    onchange="handleFileSelect(this, 'hwpFileInfo', 'hwpFileName')"
+                  />
+                </td>
+              </tr>
+            </table>
+
+            <div class="action-buttons">
+              <a href="/admin/announcements/list" class="btn btn-secondary"
+                >목록</a
+              >
+              <button type="submit" class="btn btn-primary">등록</button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
 
@@ -467,17 +474,15 @@
 
           if (!title) {
             e.preventDefault();
-            alert("공시제목을을 입력해주세요.");
+            alert("공시자료 제목을 입력해주세요.");
             return;
           }
 
-          const pdfFile = document.getElementById("pdfFile").files[0];
-          const wordFile = document.getElementById("wordFile").files[0];
-          const hwpFile = document.getElementById("hwpFile").files[0];
-
-          document.getElementById;
-          "announcementForm".submit();
+          // 제목만 있으면 등록 가능 (파일은 선택사항)
+          // 폼 제출을 진행함
         });
     </script>
+
+    <th:block th:replace="~{fragments/manager/scripts}"></th:block>
   </body>
 </html>

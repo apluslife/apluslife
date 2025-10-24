@@ -4,97 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>공시자료 상세보기 - A+Life</title>
+    <th:block th:replace="~{fragments/manager/styles}"></th:block>
     <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
-      body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        background: #f5f7fa;
-        line-height: 1.6;
-      }
-
-      .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
-      }
-
-      .header {
-        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-        color: white;
-        padding: 20px 0;
-        margin-bottom: 30px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      }
-
-      .header-content {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-
-      .breadcrumb {
-        font-size: 14px;
-        opacity: 0.9;
-      }
-
-      .breadcrumb a {
-        color: white;
-        text-decoration: none;
-      }
-
-      .breadcrumb a:hover {
-        text-decoration: underline;
-      }
-
-      h1 {
-        font-size: 28px;
-        margin-top: 10px;
-      }
-
-      .btn {
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        text-decoration: none;
-        display: inline-block;
-        background: white;
-        color: #e74c3c;
-        font-weight: bold;
-        transition: all 0.3s;
-        margin-left: 10px;
-      }
-
-      .btn:hover {
-        opacity: 0.9;
-      }
-
-      .btn-primary {
-        background: #27ae60;
-        color: white;
-      }
-
-      .btn-secondary {
-        background: #95a5a6;
-        color: white;
-      }
-
-      .btn-danger {
-        background: #e74c3c;
-        color: white;
-      }
-
       .content-section {
         background: white;
-        padding: 40px;
-        border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        margin-bottom: 30px;
+        padding: 30px;
+        border-radius: 0;
+        box-shadow: none;
+        margin: 320px 30px 20px 30px;
       }
 
       .detail-table {
@@ -117,6 +34,35 @@
         padding: 15px;
         border: 1px solid #dee2e6;
         background: white;
+      }
+
+      .detail-title {
+        font-size: 24px;
+        font-weight: 600;
+        color: #2c3e50;
+        margin: 25px 0 15px 0;
+        padding-bottom: 10px;
+      }
+
+      .detail-meta {
+        display: flex;
+        gap: 30px;
+        margin-bottom: 25px;
+        padding: 12px 0;
+        border-bottom: 1px solid #e0e0e0;
+        font-size: 13px;
+        color: #7f8c8d;
+      }
+
+      .detail-meta .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .detail-meta strong {
+        color: #2c3e50;
+        font-weight: 600;
       }
 
       .title {
@@ -153,39 +99,47 @@
       }
 
       .content-area {
-        padding: 20px;
-        background: #fafafa;
-        border-radius: 5px;
-        border: 1px solid #dee2e6;
-        margin-bottom: 20px;
+        padding: 0;
+        background: transparent;
+        border-radius: 0;
+        border: none;
+        border-top: 1px solid #e0e0e0;
+        margin-bottom: 0;
+        margin-top: 25px;
+        padding-top: 25px;
       }
 
       .content-html {
         line-height: 1.8;
         color: #34495e;
+        font-size: 14px;
       }
 
       .file-section {
-        margin-bottom: 20px;
-        padding: 15px;
-        background: #f0f8ff;
-        border-left: 4px solid #3498db;
-        border-radius: 5px;
+        margin-bottom: 25px;
+        padding: 15px 0;
+        background: transparent;
+        border-top: 1px solid #e0e0e0;
+        border-left: none;
+        border-radius: 0;
       }
 
       .file-section h3 {
         color: #2c3e50;
-        font-size: 16px;
-        margin-bottom: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 12px;
       }
 
       .file-list {
         list-style: none;
+        padding: 0;
+        margin: 0;
       }
 
       .file-item {
         padding: 8px 0;
-        border-bottom: 1px solid #e0e0e0;
+        border-bottom: none;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -199,12 +153,13 @@
         color: #2980b9;
         font-weight: 500;
         flex-grow: 1;
+        font-size: 13px;
       }
 
       .file-download {
         background: #3498db;
         color: white;
-        padding: 5px 15px;
+        padding: 6px 12px;
         border-radius: 3px;
         text-decoration: none;
         font-size: 12px;
@@ -213,15 +168,6 @@
 
       .file-download:hover {
         background: #2980b9;
-      }
-
-      .action-buttons {
-        display: flex;
-        justify-content: flex-end;
-        gap: 10px;
-        margin-top: 30px;
-        padding-top: 20px;
-        border-top: 1px solid #dee2e6;
       }
 
       .message {
@@ -245,11 +191,73 @@
         display: block;
       }
 
-      @media (max-width: 768px) {
-        .container {
-          padding: 0 15px;
-        }
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #e74c3c;
+      }
 
+      .section-header h2 {
+        color: #2c3e50;
+        font-size: 22px;
+        margin: 0;
+      }
+
+      .action-buttons-top {
+        display: flex;
+        gap: 8px;
+      }
+
+      .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .btn-primary {
+        background: #3498db;
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background: #2980b9;
+      }
+
+      .btn-secondary {
+        background: #95a5a6;
+        color: white;
+      }
+
+      .btn-secondary:hover {
+        background: #7f8c8d;
+      }
+
+      .btn-danger {
+        background: #e74c3c;
+        color: white;
+      }
+
+      .btn-danger:hover {
+        background: #c0392b;
+      }
+
+      @media (max-width: 768px) {
         .content-section {
           padding: 20px;
         }
@@ -262,109 +270,104 @@
           flex-direction: column;
         }
 
-        .header-content {
+        .section-header {
           flex-direction: column;
           align-items: flex-start;
           gap: 15px;
+        }
+
+        .action-buttons-top {
+          width: 100%;
+          flex-wrap: wrap;
+        }
+
+        .action-buttons-top .btn {
+          flex: 1;
+          min-width: 100px;
         }
       }
     </style>
   </head>
   <body>
-    <!-- 헤더 -->
-    <div class="header">
-      <div class="container">
-        <div class="header-content">
-          <div>
-            <div class="breadcrumb">
-              <a href="/">홈</a> > <a href="/admin/announcements/list">공시자료</a> >
-              상세보기
+    <div class="main-wrapper">
+      <th:block th:replace="~{fragments/manager/header}"></th:block>
+      <th:block th:replace="~{fragments/manager/sidebar}"></th:block>
+
+      <div class="main-content">
+        <!-- 메시지 표시 -->
+        <div
+          th:if="${message}"
+          class="alert alert-success"
+          th:text="${message}"
+        ></div>
+        <div
+          th:if="${error}"
+          class="alert alert-error"
+          th:text="${error}"
+        ></div>
+
+        <!-- 콘텐츠 섹션 -->
+        <div class="content-section">
+          <div class="section-header">
+            <h2>📋 공시자료 상세</h2>
+            <div class="action-buttons-top">
+              <a href="/admin/announcements/list" class="btn btn-secondary"
+                >📝 목록</a
+              >
+              <a
+                th:href="@{/admin/announcements/edit/{idx}(idx=${announcement.idx})}"
+                class="btn btn-primary"
+                >✏️ 수정</a
+              >
+              <a
+                th:href="@{/admin/announcements/delete/{idx}(idx=${announcement.idx})}"
+                class="btn btn-danger"
+                onclick="return confirm('정말 삭제하시겠습니까?');"
+                >🗑️ 삭제</a
+              >
             </div>
-            <h1>공시자료 상세보기</h1>
           </div>
-          <div>
-            <a href="/admin/announcements/list" class="btn">← 목록</a>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <div class="container">
-      <!-- 메시지 표시 -->
-      <div
-        th:if="${message}"
-        class="message success"
-        th:text="${message}"
-      ></div>
-      <div
-        th:if="${error}"
-        class="message error"
-        th:text="${error}"
-      ></div>
+          <!-- 제목 -->
+          <div class="detail-title" th:text="${announcement.title}"></div>
 
-      <!-- 공시자료 상세 -->
-      <div class="content-section">
-        <!-- 제목 -->
-        <div class="title" th:text="${announcement.title}"></div>
-
-        <!-- 메타 정보 -->
-        <div class="meta-info">
-          <div class="meta-item">
-            <span class="meta-label">등록일</span>
-            <span class="meta-value" th:text="${announcement.rDateFormatted}"></span>
-          </div>
-          <div class="meta-item">
-            <span class="meta-label">수정일</span>
-            <span
-              class="meta-value"
-              th:text="${announcement.uDateFormatted}"
+          <!-- 메타 정보 -->
+          <div class="detail-meta">
+            <span class="meta-item"
+              >📅 등록일:
+              <strong th:text="${announcement.rDateFormatted}"></strong
+            ></span>
+            <span class="meta-item"
+              >✏️ 수정일:
+              <strong th:text="${announcement.uDateFormatted}"></strong
             ></span>
           </div>
-        </div>
 
-        <!-- 첨부 파일 섹션 -->
-        <div
-          th:if="${announcement.fileName != null and !announcement.fileName.isEmpty()}"
-          class="file-section"
-        >
-          <h3>📎 첨부 파일</h3>
-          <ul class="file-list">
-            <li
-              th:each="fileName : ${#strings.split(announcement.fileName, ' \\| ')}"
-              class="file-item"
-            >
-              <span class="file-name" th:text="${fileName}"></span>
-              <a href="#" class="file-download">다운로드</a>
-            </li>
-          </ul>
-        </div>
-
-        <!-- 상세 내용 -->
-        <div th:if="${announcement.content != null}" class="content-area">
+          <!-- 첨부 파일 섹션 -->
           <div
-            class="content-html"
-            th:utext="${announcement.content}"
-          ></div>
-        </div>
+            th:if="${announcement.fileName != null and !announcement.fileName.isEmpty()}"
+            class="file-section"
+          >
+            <h3>📎 첨부 파일</h3>
+            <ul class="file-list">
+              <li
+                th:each="fileName : ${#strings.split(announcement.fileName, ' \\| ')}"
+                class="file-item"
+              >
+                <span class="file-name" th:text="${fileName}"></span>
+                <a href="#" class="file-download">다운로드</a>
+              </li>
+            </ul>
+          </div>
 
-        <!-- 액션 버튼 -->
-        <div class="action-buttons">
-          <a href="/admin/announcements/list" class="btn btn-secondary"
-            >목록</a
-          >
-          <a
-            th:href="@{/admin/announcements/edit/{idx}(idx=${announcement.idx})}"
-            class="btn btn-primary"
-            >수정</a
-          >
-          <a
-            th:href="@{/admin/announcements/delete/{idx}(idx=${announcement.idx})}"
-            class="btn btn-danger"
-            onclick="return confirm('정말 삭제하시겠습니까?');"
-            >삭제</a
-          >
+          <!-- 상세 내용 -->
+          <div th:if="${announcement.content != null}" class="content-area">
+            <div class="content-html" th:utext="${announcement.content}"></div>
+          </div>
         </div>
       </div>
     </div>
+
+    <th:block th:replace="~{fragments/manager/scripts}"></th:block>
   </body>
 </html>

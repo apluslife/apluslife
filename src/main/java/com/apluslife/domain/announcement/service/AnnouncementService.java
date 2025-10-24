@@ -73,12 +73,7 @@ public class AnnouncementService {
                                      MultipartFile pdfFile,
                                      MultipartFile wordFile,
                                      MultipartFile hwpFile) throws IOException {
-        // 최소 하나의 파일을 업로드해야 함
-        if ((pdfFile == null || pdfFile.isEmpty()) &&
-            (wordFile == null || wordFile.isEmpty()) &&
-            (hwpFile == null || hwpFile.isEmpty())) {
-            throw new IllegalArgumentException("최소 하나의 파일을 업로드해야 합니다.");
-        }
+        log.info("공시자료 저장 시작 - 제목: {}", request.getTitle());
 
         // 공시자료 생성 (aplus_gongsi 테이블에는 idx, title, rdate, udate만 저장)
         Announcement announcement = Announcement.builder()
@@ -87,10 +82,12 @@ public class AnnouncementService {
 
         Announcement saved = announcementRepository.save(announcement);
         Integer announcementIdx = saved.getIdx();
+        log.info("공시자료 DB 저장 완료 - idx: {}", announcementIdx);
 
-        // 파일 정보를 aplus_파일업로드 테이블에 저장
+        // 파일이 있으면 저장 (파일 없어도 괜찮음)
         saveAnnouncementFiles(announcementIdx, pdfFile, wordFile, hwpFile);
 
+        log.info("공시자료 최종 저장 완료 - idx: {}", announcementIdx);
         return announcementIdx;
     }
 

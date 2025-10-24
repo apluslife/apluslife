@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
  * aplus_파일업로드 테이블 매핑
  */
 @Entity
-@Table(name = "aplus_파일업로드")
+@Table(name = "aplus_fileupload")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

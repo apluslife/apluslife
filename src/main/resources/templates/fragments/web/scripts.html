@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <!-- JavaScript fragment -->
+    <script th:fragment="admin-scripts">
+      // 사이드바 메뉴 토글
+      document.querySelectorAll(".menu-item > a").forEach((link) => {
+        link.addEventListener("click", function (e) {
+          if (
+            this.nextElementSibling &&
+            this.nextElementSibling.classList.contains("submenu")
+          ) {
+            e.preventDefault();
+            this.parentElement.classList.toggle("open");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

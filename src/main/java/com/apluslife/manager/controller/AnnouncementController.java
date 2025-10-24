@@ -1,4 +1,4 @@
-package com.apluslife.web.controller;
+package com.apluslife.manager.controller;
 
 import com.apluslife.domain.announcement.dto.AnnouncementDto;
 import com.apluslife.domain.announcement.dto.AnnouncementRequest;
@@ -19,6 +19,7 @@ import java.io.IOException;
 
 /**
  * 공시자료 관리 컨트롤러
+ * 관리자용 공시자료 CRUD 작업
  */
 @Slf4j
 @Controller
@@ -71,24 +72,20 @@ public class AnnouncementController {
                         @RequestParam(value = "hwpFile", required = false) MultipartFile hwpFile,
                         RedirectAttributes redirectAttributes) {
         try {
+            log.info("공시자료 등록 요청 - 제목: {}", request.getTitle());
+
             // 제목 검증
             if (request.getTitle() == null || request.getTitle().trim().isEmpty()) {
+                log.warn("제목이 비어있습니다");
                 redirectAttributes.addFlashAttribute("error", "공시자료 제목을 입력하세요.");
                 return "redirect:/admin/announcements/create";
             }
 
-            // 파일 검증
-            if ((pdfFile == null || pdfFile.isEmpty()) &&
-                (wordFile == null || wordFile.isEmpty()) &&
-                (hwpFile == null || hwpFile.isEmpty())) {
-                redirectAttributes.addFlashAttribute("error", "최소 하나의 파일을 업로드해야 합니다.");
-                return "redirect:/admin/announcements/create";
-            }
-
-            // 공시자료 생성
+            // 공시자료 생성 (파일 없어도 저장 가능)
             Integer announcementIdx = announcementService.createAnnouncement(
                     request, pdfFile, wordFile, hwpFile);
 
+            log.info("공시자료 등록 성공 - idx: {}", announcementIdx);
             redirectAttributes.addFlashAttribute("message", "공시자료가 성공적으로 등록되었습니다.");
             return "redirect:/admin/announcements/detail/" + announcementIdx;
 

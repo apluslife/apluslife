@@ -27,8 +27,7 @@
       "Bash(netstat:*)",
       "Bash(findstr:*)",
       "Bash(taskkill:*)",
-      "Bash(timeout 30 powershell:*)",
-      "Bash(do sleep 2)"
+      "Bash(timeout 30 powershell:*)"
     ],
     "deny": [],
     "ask": []

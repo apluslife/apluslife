@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <!-- 사이드바 fragment -->
+    <aside th:fragment="sidebar" class="sidebar">
+      <h2>👨‍💼 관리 메뉴</h2>
+      <ul class="sidebar-menu">
+        <!-- 회원 관리 그룹 (맨 위) -->
+        <li class="menu-item open">
+          <a href="#users">👥 회원 관리</a>
+          <ul class="submenu">
+            <li><a href="/admin/users/list" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/admin/users/list')} ? 'active' : ''">회원 목록</a></li>
+            <li><a href="/admin/users/stats" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/admin/users/stats')} ? 'active' : ''">통계</a></li>
+          </ul>
+        </li>
+
+        <!-- A+Life 소식 그룹 -->
+        <li
+          style="
+            padding: 10px 20px;
+            margin-top: 15px;
+            font-size: 12px;
+            color: #95a5a6;
+            font-weight: bold;
+            text-transform: uppercase;
+          "
+        >
+          📢 A+Life 소식
+        </li>
+        <li class="menu-item open">
+          <a href="#news">📰 라이프뉴스 관리</a>
+          <ul class="submenu">
+            <li><a href="/admin/news/list" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/admin/news/list')} ? 'active' : ''">목록</a></li>
+            <li><a href="/admin/news/create" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/admin/news/create')} ? 'active' : ''">등록</a></li>
+          </ul>
+        </li>
+
+        <li class="menu-item open">
+          <a href="#notice">🔔 부고알림 관리</a>
+          <ul class="submenu">
+            <li><a href="/admin/notice/list" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/admin/notice/list')} ? 'active' : ''">목록</a></li>
+            <li><a href="/admin/notice/create" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/admin/notice/create')} ? 'active' : ''">등록</a></li>
+          </ul>
+        </li>
+
+        <li class="menu-item open">
+          <a href="#etc">📑 기타 관리</a>
+          <ul class="submenu">
+            <li><a href="/admin/etc/list" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/admin/etc/list')} ? 'active' : ''">목록</a></li>
+            <li><a href="/admin/etc/create" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/admin/etc/create')} ? 'active' : ''">등록</a></li>
+          </ul>
+        </li>
+
+        <!-- 경영현황 그룹 -->
+        <li
+          style="
+            padding: 10px 20px;
+            margin-top: 10px;
+            font-size: 12px;
+            color: #95a5a6;
+            font-weight: bold;
+            text-transform: uppercase;
+          "
+        >
+          📊 경영현황
+        </li>
+        <li class="menu-item open">
+          <a href="#announcements">📋 공시자료 관리</a>
+          <ul class="submenu">
+            <li><a href="/admin/announcements/list" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/admin/announcements/list')} ? 'active' : ''">목록</a></li>
+            <li><a href="/admin/announcements/create" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/admin/announcements/create')} ? 'active' : ''">등록</a></li>
+            <li><a href="/admin/announcements/detail" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/admin/announcements/detail')} ? 'active' : ''">상세보기</a></li>
+            <li><a href="/admin/announcements/edit" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/admin/announcements/edit')} ? 'active' : ''">수정</a></li>
+          </ul>
+        </li>
+
+        <!-- 고객센터 그룹 -->
+        <li
+          style="
+            padding: 10px 20px;
+            margin-top: 15px;
+            font-size: 12px;
+            color: #95a5a6;
+            font-weight: bold;
+            text-transform: uppercase;
+          "
+        >
+          💬 고객센터
+        </li>
+        <li class="menu-item open">
+          <a href="#reviews">⭐ 이용후기 관리</a>
+          <ul class="submenu">
+            <li><a href="/admin/reviews/list" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/admin/reviews/list')} ? 'active' : ''">목록</a></li>
+            <li><a href="/admin/reviews/manage" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/admin/reviews/manage')} ? 'active' : ''">관리</a></li>
+          </ul>
+        </li>
+
+        <li class="menu-item open">
+          <a href="#faq">❓ 자주하는질문 관리</a>
+          <ul class="submenu">
+            <li><a href="/admin/faq/list" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/admin/faq/list')} ? 'active' : ''">목록</a></li>
+            <li><a href="/admin/faq/create" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/admin/faq/create')} ? 'active' : ''">등록</a></li>
+          </ul>
+        </li>
+
+        <!-- 전환서비스 그룹 (향후) -->
+        <li
+          style="
+            padding: 10px 20px;
+            margin-top: 15px;
+            font-size: 12px;
+            color: #95a5a6;
+            font-weight: bold;
+            text-transform: uppercase;
+          "
+        >
+          🔄 전환서비스
+        </li>
+        <li class="menu-item open">
+          <a href="#conversion-category">🏷️ 카테고리 관리</a>
+          <ul class="submenu">
+            <li><a href="/admin/conversion/category/list" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/admin/conversion/category/list')} ? 'active' : ''">목록</a></li>
+            <li><a href="/admin/conversion/category/create" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/admin/conversion/category/create')} ? 'active' : ''">등록</a></li>
+          </ul>
+        </li>
+
+        <li class="menu-item open">
+          <a href="#conversion-product">📦 상품 관리</a>
+          <ul class="submenu">
+            <li><a href="/admin/conversion/product/list" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/admin/conversion/product/list')} ? 'active' : ''">목록</a></li>
+            <li><a href="/admin/conversion/product/create" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/admin/conversion/product/create')} ? 'active' : ''">등록</a></li>
+          </ul>
+        </li>
+
+        <!-- 기타 관리 그룹 -->
+        <li
+          style="
+            padding: 10px 20px;
+            margin-top: 15px;
+            font-size: 12px;
+            color: #95a5a6;
+            font-weight: bold;
+            text-transform: uppercase;
+          "
+        >
+          ⚙️ 기타
+        </li>
+        <li class="menu-item open">
+          <a href="#partners">🤝 제휴업체 관리</a>
+          <ul class="submenu">
+            <li><a href="/admin/partners/list" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/admin/partners/list')} ? 'active' : ''">목록</a></li>
+            <li><a href="/admin/partners/create" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/admin/partners/create')} ? 'active' : ''">등록</a></li>
+          </ul>
+        </li>
+
+        <li class="menu-item open">
+          <a href="#popup">🎯 팝업 관리</a>
+          <ul class="submenu">
+            <li><a href="/admin/popup/list" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/admin/popup/list')} ? 'active' : ''">목록</a></li>
+            <li><a href="/admin/popup/create" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/admin/popup/create')} ? 'active' : ''">등록</a></li>
+          </ul>
+        </li>
+
+        <li class="menu-item open">
+          <a href="#settings">⚙️ 시스템 설정</a>
+          <ul class="submenu">
+            <li><a href="/admin/settings/general" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/admin/settings/general')} ? 'active' : ''">기본 설정</a></li>
+            <li><a href="/admin/settings/security" th:classappend="${#strings.contains(#httpServletRequest.requestURI, '/admin/settings/security')} ? 'active' : ''">보안 설정</a></li>
+          </ul>
+        </li>
+      </ul>
+    </aside>
+  </body>
+</html>

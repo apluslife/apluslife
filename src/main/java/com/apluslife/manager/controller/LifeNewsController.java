@@ -1,4 +1,4 @@
-package com.apluslife.web.controller;
+package com.apluslife.manager.controller;
 
 import com.apluslife.domain.lifenews.dto.LifeNewsDto;
 import com.apluslife.domain.lifenews.dto.LifeNewsRequest;
